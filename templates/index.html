@@ -1,11 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    안녕하세요
-    저는 김선용입니다
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>항해 날씨</title>
+    </head>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="../static/style.css">
+
+
+    <body>
+        <div>
+
+            <label>도시 선택:</label>
+            <select name="city" id="citySelect">
+                <option value="seoul">서울</option>
+                <option value="incheon">인천</option>
+                <option value="seongnam">성남</option>
+                <option value="busan">부산</option>
+            </select>
+
+            <button onclick="weather()">날씨 보기</button>
+        </div>
+
+        <div id="weather">
+            <span class="weatherComponent">위치:</span>
+            <div id="city">
+
+            </div>
+            <span class="weatherComponent">온도: </span>
+            <div id="temperature">
+
+            </div>
+            <span class="weatherComponent">현재 날씨</span>
+            <div id="description">
+
+            </div>
+            <span class="weatherComponent">습도:</span>
+            <div id="humidity">
+
+            </div>
+            <span class="weatherComponent">이미지:</span>
+            <div id="icon">
+
+            </div>
+        </div>
+
+        <script src="../static/weather.js"></script>
+    </body>
+
 </html>
