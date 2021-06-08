@@ -1,28 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>항해 날씨</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+
+    <title>항해 날씨</title>
+
+</head>
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="../static/style.css">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous">
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<link rel="stylesheet" href="../static/style.css">
 
 
-    <body>
-        <div>
+<body>
+<div>
+    <label>도시 선택:</label>
+    <select name="city" id="citySelect">
+        <option value="seoul">서울</option>
+        <option value="incheon">인천</option>
+        <option value="seongnam">성남</option>
+        <option value="busan">부산</option>
+    </select>
 
-            <label>도시 선택:</label>
-            <select name="city" id="citySelect">
-                <option value="seoul">서울</option>
-                <option value="incheon">인천</option>
-                <option value="seongnam">성남</option>
-                <option value="busan">부산</option>
-            </select>
-
-            <button onclick="weather()">날씨 보기</button>
-        </div>
 
         <div id="weather">
             <span class="weatherComponent">위치:</span>
@@ -49,8 +60,11 @@
                 <img class="weatherIcon" src="http://openweathermap.org/img/wn/{{ image }}@2x.png">
             </div>
         </div>
+  
 
-        <script src="../static/weather.js"></script>
-    </body>
+    </div>
+</div>
+<script src="../static/weather.js"></script>
+</body>
 
 </html>
