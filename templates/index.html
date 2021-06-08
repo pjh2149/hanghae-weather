@@ -186,19 +186,34 @@
             }
 
             @media (max-width: 320px) {
+            {# 아이폰5 #}
                 .weather_info_width {
-                    position: absolute;
                     padding: 6px;
                 }
+
                 .title_phone {
                     font-size: 17px;
                 }
+
                 .bar_padding {
                     font-size: 11px;
                     margin: 0 auto;
                     padding-top: 33px;
                     font-weight: bold;
                 }
+            }
+
+            @media (max-width: 280px) {
+            {# 갤럭시폴드 #}
+                .weather_info_width {
+                    left: 53.5%;
+                    padding: 2px;
+                }
+
+                .weather_info_text {
+                    font-size: 9px;
+                }
+
             }
         </style>
     </head>
