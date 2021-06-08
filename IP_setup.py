@@ -3,7 +3,6 @@ import requests
 
 from urllib.request import Request, urlopen
 from flask import Flask
-from pymongo import MongoClient
 from bs4 import BeautifulSoup
 
 def translator(text):
@@ -12,9 +11,6 @@ def translator(text):
     params = {"source": "en", "target": "ko", "text": text}
     response = requests.post(request_url, headers=headers, data=params)
     return response.json()
-
-client = MongoClient('localhost', 27017)
-db = client.dbsparta
 
 app = Flask(__name__)
 
@@ -41,3 +37,17 @@ def IP():
     city_korean = translator(city)['message']['result']['translatedText']
 
     return [region, city, coordinate, postcode, region_korean, city_korean]
+
+def weather():
+    lat = IP()[2][0]
+    lon = IP()[2][1]
+    r = requests.get(f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid=3d9290fe0f2425345dc583eb4d290e52&units=metric")
+    result = r.json()
+    temperature = result["main"]["temp"]
+    description = result["weather"][0]["description"]
+    humidity = result["main"]["humidity"]
+    wind_speed = result["wind"]["speed"]
+    # wind speed 단위 = meter / second
+    image = result["weather"][0]["icon"]
+
+    return [temperature, description, humidity, wind_speed, image]

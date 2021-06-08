@@ -1,33 +1,25 @@
 import IP_setup
-
-from flask import Flask, render_template, request, jsonify, redirect, url_for
-from pymongo import MongoClient
-import requests
-from flask import Flask, render_template
-import requests
-
+import visitors_counter
 import ssl
+
+from pymongo import MongoClient
+from flask import Flask, render_template
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
 app = Flask(__name__)
 
+client = MongoClient('localhost', 27017)  # 개인테스트용
+db = client.dbsparta
 
-@app.route('/')
-def home():
-    IP_setup.IP()
-    lat = IP_setup.IP()[2][0]
-    lon = IP_setup.IP()[2][1]
-    r = requests.get(f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid=3d9290fe0f2425345dc583eb4d290e52&units=metric")
-    result = r.json()
-    temperature = result["main"]["temp"]
-    description = result["weather"][0]["description"]
-    humidity = result["main"]["humidity"]
-    wind_speed = result["wind"]["speed"]
-    # wind speed 단위 = meter / second
-    image = result["weather"][0]["icon"]
-    return render_template('index.html', result=result, temperature=temperature, description=description,
-                           humidity=humidity, wind_speed=wind_speed, image=image)
+@app.route('/')  # IP_setup.IP() = [region, city, coordinate, postcode, region_korean, city_korean]
+def home():  # IP_setup.weather() = [temperature, description, humidity, wind_speed, image]
+    visitors_counter.visitors()
+    return render_template('index.html', region=IP_setup.IP()[4], city=IP_setup.IP()[5],
+                           temperature=IP_setup.weather()[0], description=IP_setup.weather()[1],
+                           humidity=IP_setup.weather()[2], wind_speed=IP_setup.weather()[3],
+                           image=IP_setup.weather()[4], visitors_today=list(db.todayCounter.find({}, {'_id': False})),
+                           visitors_total=list(db.visitorCounter.find({}, {'_id': False})))
 
 
 if __name__ == '__main__':
