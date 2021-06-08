@@ -35,7 +35,7 @@ def home():
             weather_index.append(j)
 
         visitors_counter.visitors()
-        today = str(datetime.now())
+        today = str(datetime.now()).split(' ')[0]
 
         return render_template('index.html', region=ip_index[1], city=ip_index[2],
                                temperature=weather_index[0], description=weather_index[1], wind_speed=weather_index[2],
