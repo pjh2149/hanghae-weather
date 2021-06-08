@@ -8,6 +8,8 @@ from datetime import datetime, timedelta
 
 import IP_setup
 import visitors_counter
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
 
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
@@ -39,7 +41,7 @@ def home():
 
         return render_template('index.html', region=ip_index[1], city=ip_index[2],
                                temperature=weather_index[0], description=weather_index[1], wind_speed=weather_index[2],
-                               humidity=weather_index[3], image=weather_index[4],
+                               humidity=weather_index[3], image=weather_index[4], main=weather_index[5], background_image=weather_index[6],
                                visitors_today=list(db.todayCounter.find({}, {'_id': False})),
                                visitors_total=list(db.visitorCounter.find({}, {'_id': False})), today=today)
     except jwt.ExpiredSignatureError:
@@ -73,9 +75,10 @@ def sign_in():
     # 로그인
     username_receive = request.form['username_give']
     password_receive = request.form['password_give']
+    nickname_receive = request.form['nickname_give']
 
     pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
-    result = db.users.find_one({'username': username_receive, 'password': pw_hash})
+    result = db.users.find_one({'username': username_receive, 'password': pw_hash, 'nickname': nickname_receive})
 
     if result is not None:
         payload = {
@@ -95,13 +98,15 @@ def sign_up():
     username_receive = request.form['username_give']
     password_receive = request.form['password_give']
     password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+    nickname_receive = request.form['nickname_give']
     doc = {
         "username": username_receive,  # 아이디
         "password": password_hash,  # 비밀번호
         "profile_name": username_receive,  # 프로필 이름 기본값은 아이디
         "profile_pic": "",  # 프로필 사진 파일 이름
         "profile_pic_real": "profile_pics/profile_placeholder.png",  # 프로필 사진 기본 이미지
-        "profile_info": ""  # 프로필 한 마디
+        "profile_info": "",  # 프로필 한 마디
+        "nickname": nickname_receive
     }
     db.users.insert_one(doc)
     return jsonify({'result': 'success'})
