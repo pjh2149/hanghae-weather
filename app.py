@@ -18,13 +18,12 @@ def home():
     IP_setup.IP()
     lat = IP_setup.IP()[2][0]
     lon = IP_setup.IP()[2][1]
-    r = requests.get(f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid=3d9290fe0f2425345dc583eb4d290e52&units=metric")
+    r = requests.get(f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid=3d9290fe0f2425345dc583eb4d290e52&units=metric&lang=kr")
     result = r.json()
     temperature = result["main"]["temp"]
     description = result["weather"][0]["description"]
     humidity = result["main"]["humidity"]
     wind_speed = result["wind"]["speed"]
-    # wind speed 단위 = meter / second
     image = result["weather"][0]["icon"]
     return render_template('index.html', result=result, temperature=temperature, description=description,
                            humidity=humidity, wind_speed=wind_speed, image=image)
