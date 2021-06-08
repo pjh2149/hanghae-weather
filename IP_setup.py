@@ -41,7 +41,7 @@ def IP():
 def weather(lat, lon):
     r = requests.get(f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid=3d9290fe0f2425345dc583eb4d290e52&units=metric")
     result = r.json()
-    temperature = result["main"]["temp"]
+    temperature = round(float(result["main"]["temp"]),1)
     description = translator(result["weather"][0]["description"])
     humidity = result["main"]["humidity"]
     # wind_speed = result["wind"]["speed"]
