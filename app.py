@@ -8,11 +8,10 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 
-IP_setup.IP()[numberrr]
 
 @app.route('/')
 def home():
-
+    print(IP_setup.IP())
     return render_template('index.html')
 
 
