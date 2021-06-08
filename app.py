@@ -41,7 +41,7 @@ def home():
 
         return render_template('index.html', region=ip_index[1], city=ip_index[2],
                                temperature=weather_index[0], description=weather_index[1], wind_speed=weather_index[2],
-                               humidity=weather_index[3], image=weather_index[4],
+                               humidity=weather_index[3], image=weather_index[4], main=weather_index[5], background_image=weather_index[6],
                                visitors_today=list(db.todayCounter.find({}, {'_id': False})),
                                visitors_total=list(db.visitorCounter.find({}, {'_id': False})), today=today)
     except jwt.ExpiredSignatureError:
