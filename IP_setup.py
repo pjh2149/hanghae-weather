@@ -39,13 +39,12 @@ def IP():
     return [coordinate, region_korean, city_korean]
 
 def weather(lat, lon):
-    r = requests.get(f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid=3d9290fe0f2425345dc583eb4d290e52&units=metric")
+    r = requests.get(f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid=3d9290fe0f2425345dc583eb4d290e52&units=metric&lang=kr")
     result = r.json()
-    temperature = round(float(result["main"]["temp"]),1)
+    temperature = round(float(result["main"]["temp"]), 1)
     description = translator(result["weather"][0]["description"])
+    wind_speed = result["wind"]["speed"]
     humidity = result["main"]["humidity"]
-    # wind_speed = result["wind"]["speed"]
-    # wind speed 단위 = meter / second
     image = result["weather"][0]["icon"]
 
-    return [temperature, description, humidity, image]
+    return [temperature, description, wind_speed, humidity, image]
