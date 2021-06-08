@@ -44,8 +44,9 @@ def weather(lat, lon):
     temperature = round(float(result["main"]["temp"]),1)
     description = translator(result["weather"][0]["description"])
     humidity = result["main"]["humidity"]
-    # wind_speed = result["wind"]["speed"]
+    wind_speed = result["wind"]["speed"]
+    main = result["weather"][0]["main"]
     # wind speed 단위 = meter / second
     image = result["weather"][0]["icon"]
 
-    return [temperature, description, humidity, image]
+    return [temperature, description, humidity, image, main]

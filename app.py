@@ -8,6 +8,8 @@ from datetime import datetime, timedelta
 
 import IP_setup
 import visitors_counter
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
 
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
