@@ -31,18 +31,17 @@ def home():
         for i in IP_setup.IP():
             ip_index.append(i)
 
-        for j in IP_setup.weather(ip_index[0][0], ip_index[0][0]):  # ip_index[2][0], ip_index[2][1] = lat, lon
+        for j in IP_setup.weather(ip_index[0][0], ip_index[0][1]):  # lat, lon
             weather_index.append(j)
 
         visitors_counter.visitors()
-        print(ip_index)
-        print(weather_index)
+        today = str(datetime.now())
 
         return render_template('index.html', region=ip_index[1], city=ip_index[2],
-                               temperature=weather_index[0], description=weather_index[1],
-                               humidity=weather_index[2], image=weather_index[3],
+                               temperature=weather_index[0], description=weather_index[1], wind_speed=weather_index[2],
+                               humidity=weather_index[3], image=weather_index[4],
                                visitors_today=list(db.todayCounter.find({}, {'_id': False})),
-                               visitors_total=list(db.visitorCounter.find({}, {'_id': False})))
+                               visitors_total=list(db.visitorCounter.find({}, {'_id': False})), today=today)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -80,8 +79,8 @@ def sign_in():
 
     if result is not None:
         payload = {
-         'id': username_receive,
-         'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
+            'id': username_receive,
+            'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
 
@@ -97,12 +96,12 @@ def sign_up():
     password_receive = request.form['password_give']
     password_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
     doc = {
-        "username": username_receive,                               # 아이디
-        "password": password_hash,                                  # 비밀번호
-        "profile_name": username_receive,                           # 프로필 이름 기본값은 아이디
-        "profile_pic": "",                                          # 프로필 사진 파일 이름
-        "profile_pic_real": "profile_pics/profile_placeholder.png", # 프로필 사진 기본 이미지
-        "profile_info": ""                                          # 프로필 한 마디
+        "username": username_receive,  # 아이디
+        "password": password_hash,  # 비밀번호
+        "profile_name": username_receive,  # 프로필 이름 기본값은 아이디
+        "profile_pic": "",  # 프로필 사진 파일 이름
+        "profile_pic_real": "profile_pics/profile_placeholder.png",  # 프로필 사진 기본 이미지
+        "profile_info": ""  # 프로필 한 마디
     }
     db.users.insert_one(doc)
     return jsonify({'result': 'success'})
