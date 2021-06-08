@@ -1,17 +1,22 @@
-from urllib.request import Request, urlopen
-
 import flask
+import requests
+
+from urllib.request import Request, urlopen
 from flask import Flask
 from pymongo import MongoClient
 from bs4 import BeautifulSoup
+
+def translator(text):
+    request_url = "https://openapi.naver.com/v1/papago/n2mt"
+    headers = {"X-Naver-Client-Id": "rcKyc1EaWsLVqa7_KMcV", "X-Naver-Client-Secret": "S0Xt7xUDbk"}
+    params = {"source": "en", "target": "ko", "text": text}
+    response = requests.post(request_url, headers=headers, data=params)
+    return response.json()
 
 client = MongoClient('localhost', 27017)
 db = client.dbsparta
 
 app = Flask(__name__)
-
-
-# IP를 받아서, IP로 위치 찾고, 위치로 날씨 검색
 
 def IP():
     ip_address = flask.request.remote_addr
@@ -32,4 +37,7 @@ def IP():
     coordinate = (coordinate_x_str.replace('<span>', "").replace('</span>', "").split(u'\xa0')[0], coordinate_y_str.replace('<span>', "").replace('</span>', "").split(u'\xa0')[0])
     postcode = postcode_str.replace('<span>', "").replace('</span>', "")
 
-    return [region, city, coordinate, postcode]
+    region_korean = translator(region)['message']['result']['translatedText']
+    city_korean = translator(city)['message']['result']['translatedText']
+
+    return [region, city, coordinate, postcode, region_korean, city_korean]

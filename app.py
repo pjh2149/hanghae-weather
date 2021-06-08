@@ -11,6 +11,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
+    print(IP_setup.IP())
     return render_template('index.html')
 
 
