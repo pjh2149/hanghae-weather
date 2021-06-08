@@ -32,4 +32,9 @@ def IP():
     coordinate = (coordinate_x_str.replace('<span>', "").replace('</span>', "").split(u'\xa0')[0], coordinate_y_str.replace('<span>', "").replace('</span>', "").split(u'\xa0')[0])
     postcode = postcode_str.replace('<span>', "").replace('</span>', "")
 
+    print(region)
+    print(city)
+    print(coordinate)
+    print(postcode)
+
     return [region, city, coordinate, postcode]
