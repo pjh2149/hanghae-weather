@@ -80,9 +80,8 @@
         }
 
         .weather_info {
-            width: 20%;
-            height: 400px;
-            margin-top: 40px;
+            height: 100px;
+            margin-top: 340px;
             margin-right: 40px;
             float: right;
             display: block;
@@ -90,6 +89,10 @@
 
         .weather_info p {
             text-align: right;
+        }
+
+        .bar_padding {
+            padding-top: 35%;
         }
     </style>
 </head>
@@ -101,20 +104,17 @@
                 항해 날씨
             </p>
             <p class="subtitle">
-                subtitle
+                {{ today }}
             </p>
         </div>
     </section>
     <div class="main_bg">
         <article class="message">
-            <div class="message-body">
-                {{ description }}
-            </div>
         </article>
 
         <div class="weather_info box">
-            <p>님의 위치는 {{ region }} {{ city }} 입니다.</p>
-            <p>현재 온도 {{ temperature }}도</p>
+            <p class="subtitle">{{ nickname }}님의 위치는 {{ region }} {{ city }} 입니다.</p>
+            <p class="description_padding">{{ description }}</p>
 
         </div>
 
@@ -123,26 +123,25 @@
         <nav class="level is-mobile">
             <div class="level-item has-text-centered">
                 <div>
-                    <p class="heading">Tweets</p>
-                    <p class="title">3,456</p>
+                    <img class="weatherIcon" src="http://openweathermap.org/img/wn/{{ image }}@2x.png">
                 </div>
             </div>
             <div class="level-item has-text-centered">
                 <div>
-                    <p class="heading">Following</p>
-                    <p class="title">123</p>
+                    <p class="title">온도</p>
+                    <p class="subtitle bar_padding">{{ temperature }}℃</p>
                 </div>
             </div>
             <div class="level-item has-text-centered">
                 <div>
-                    <p class="heading">Followers</p>
-                    <p class="title">456K</p>
+                    <p class="title">습도</p>
+                    <p class="subtitle bar_padding">{{ humidity }}%</p>
                 </div>
             </div>
             <div class="level-item has-text-centered">
                 <div>
-                    <p class="heading">Likes</p>
-                    <p class="title">789</p>
+                    <p class="title">풍속</p>
+                    <p class="subtitle bar_padding">{{ wind_speed }}m/s</p>
                 </div>
             </div>
         </nav>
