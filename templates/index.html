@@ -25,37 +25,8 @@
 
 
     <body>
-        <div>
-            <div id="weather">
-                <span class="weatherComponent">위치:</span>
-                <div id="city">
-                </div>
-                <span class="weatherComponent">온도: </span>
-                <div id="temperature">
-                    {{ temperature }}
-                </div>
-                <span class="weatherComponent">현재 날씨</span>
-                <div id="description">
-                    {{ description }}
-                </div>
-                <span class="weatherComponent">풍속:</span>
-                <div id="windSpeed">
-                    {{ wind_speed }} m/s
-                </div>
-                <span class="weatherComponent">습도:</span>
-                <div id="humidity">
-                    {{ humidity }}
-                </div>
-                <span class="weatherComponent">이미지:</span>
-                <div id="icon">
-                    <img class="weatherIcon" src="http://openweathermap.org/img/wn/{{ image }}@2x.png">
-                </div>
-            </div>
-
-
-        </div>
-        </div>
-        <script src="../static/weather.js"></script>
+        {{ region }}
+        {{ city }}
     </body>
 
 </html>
