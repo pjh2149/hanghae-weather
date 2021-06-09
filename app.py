@@ -17,7 +17,7 @@ app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
 
 SECRET_KEY = 'SPARTA'
 
-# client = MongoClient('mongodb://15.164.50.47', 27017, username="test", password="test")
+# client = MongoClient('mongodb://test:test@localhost', 27017)
 client = MongoClient('localhost', 27017)  # 개인테스트용
 db = client.dbsparta
 

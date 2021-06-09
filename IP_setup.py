@@ -13,6 +13,20 @@ def translator(text):
     response = requests.post(request_url, headers=headers, data=params)
     return response.json()['message']['result']['translatedText']
 
+def translator2(text):
+    request_url = "https://openapi.naver.com/v1/papago/n2mt"
+    headers = {"X-Naver-Client-Id": "vkiqbYUMOxV5kvNjSelf", "X-Naver-Client-Secret": "yTOQNBsIwq"}
+    params = {"source": "en", "target": "ko", "text": text}
+    response = requests.post(request_url, headers=headers, data=params)
+    return response.json()['message']['result']['translatedText']
+
+def translator3(text):
+    request_url = "https://openapi.naver.com/v1/papago/n2mt"
+    headers = {"X-Naver-Client-Id": "6uSpE4vIWa6ayIFlERQD", "X-Naver-Client-Secret": "8SqYAfF8W5"}
+    params = {"source": "en", "target": "ko", "text": text}
+    response = requests.post(request_url, headers=headers, data=params)
+    return response.json()['message']['result']['translatedText']
+
 
 app = Flask(__name__)
 
@@ -45,8 +59,18 @@ def IP():
                   coordinate_y_str.replace('<span>', "").replace('</span>', "").split(u'\xa0')[0])
     # postcode = postcode_str.replace('<span>', "").replace('</span>', "")
 
-    region_korean = translator(region)
-    city_korean = translator(city)
+    try:
+        region_korean = translator(region)
+        city_korean = translator(city)
+    except KeyError:
+        try:
+            region_korean = translator2(region)
+            city_korean = translator2(city)
+        except KeyError:
+            region_korean = translator3(region)
+            city_korean = translator3(city)
+
+    print(coordinate)
 
     return [coordinate, region_korean, city_korean]
 
