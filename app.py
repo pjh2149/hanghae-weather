@@ -19,7 +19,7 @@ SECRET_KEY = 'SPARTA'
 
 # client = MongoClient('mongodb://15.164.50.47', 27017, username="test", password="test")
 client = MongoClient('localhost', 27017)  # 개인테스트용
-db = client.dbsparta_plus_week4
+db = client.dbsparta
 
 
 @app.route('/')

@@ -15,12 +15,28 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Jua&display=swap"
           rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 
     <script src="https://kit.fontawesome.com/ac418ea973.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        Kakao.init('a03c10d32f60b8eeeac95469defb73fe');
 
+        function sendLink() { // 카카오톡 공유하기
+            Kakao.Link.sendDefault({
+                objectType: 'text',
+                text: "?",
+                link: {
+                    mobileWebUrl: 'https://developers.kakao.com/docs/js/kakaotalklink#텍스트-템플릿-보내기',
+                    webUrl: 'https://developers.kakao.com/docs/js/kakaotalklink#텍스트-템플릿-보내기',
+                },
+            })
+        }
+    </script>
     <title>항해 날씨</title>
 
     <style>
@@ -30,6 +46,7 @@
             list-style: none;
             color: #000;
             box-sizing: border-box;
+            font-family: 'Do Hyeon', sans-serif;
         }
 
         body {
@@ -57,24 +74,15 @@
             background-image: url("../static/763246.jpg");
             background-size: cover;
             background-position: center;
+            border-radius: 30px;
         }
 
-        .box {
+        .middle_box {
             width: 80%;
             margin: 0 auto;
             margin-top: -50px;
         }
 
-        .main_bg h1 {
-            text-align: center;
-            font-size: 3em;
-        }
-
-        .message {
-            width: 30%;
-            float: left;
-
-        }
 
         .media {
             width: 80%;
@@ -88,14 +96,18 @@
             margin-right: 40px;
             float: right;
             display: block;
+            background: rgba(0,0,0,0.5);
         }
 
         .weather_info_text {
             font-size: 1.2vw;
+            color: #ffffff;
         }
 
         .weather_info p {
             text-align: right;
+            color: #ffffff;
+            font-size: 1.1vw;
         }
 
         .bar_padding {
@@ -129,7 +141,7 @@
         .kakao a {
             position: fixed;
             display: block;
-            right: 10%;
+            right: 8%;
             bottom: 120px;
             width: 50px;
             height: 50px;
@@ -138,12 +150,18 @@
             border-radius: 100px;
             background: url("../static/kakao2.jpg") no-repeat center;
             background-size: cover;
+            z-index: 999;
+        }
+
+        .kakao a:hover{
+            transform: scale(1.1);
+            transition: all 0.4s;
         }
 
         .refresh a {
             position: fixed;
             display: block;
-            right: 10%;
+            right: 8%;
             bottom: 60px;
             width: 50px;
             height: 50px;
@@ -152,7 +170,29 @@
             border-radius: 100px;
             background: url("../static/refresh_14433.png") no-repeat center;
             background-size: cover;
+            z-index: 999;
+        }
 
+        .refresh a:hover{
+            transform: scale(1.1);
+            transition: all 0.4s;
+        }
+
+
+        .count-visitor{
+            padding-top: 4%;
+            text-align: right;
+            color: #777 !important;
+        }
+
+        .main_logo{
+            width: 15%;
+            margin: auto;
+            padding: 2% 0;
+        }
+
+        .main_logo img{
+            width: 100%;
         }
 
 
@@ -167,6 +207,10 @@
         }
 
         @media (max-width: 1024px) {
+            .navbar-end{
+                display: none;
+            }
+
             .weather_info_width {
                 position: absolute;
                 left: 50%;
@@ -179,6 +223,11 @@
         }
 
         @media (max-width: 640px) {
+
+            .navbar-end{
+                display: none;
+            }
+
             .bar_padding {
                 font-size: 18px;
             }
@@ -186,9 +235,23 @@
             .weather_info_text {
                 font-size: 15px;
             }
+
+            .kakao a{
+                display: none;
+            }
+            .refresh a{
+                width: 40px;
+                height: 40px;
+                right: 3%;
+                bottom: 2%;
+            }
         }
 
         @media (max-width: 414px) {
+            .navbar-end{
+                display: none;
+            }
+
             .weather_info_width {
                 position: absolute;
                 padding: 9px;
@@ -214,9 +277,16 @@
                 padding-top: 30px;
                 font-weight: bold;
             }
+
+            .kakao a{
+                display: none;
+            }
         }
 
         @media (max-width: 320px) {
+            .navbar-end{
+                display: none;
+            }
         {# 아이폰5 #}
             .weather_info_width {
                 padding: 6px;
@@ -232,9 +302,16 @@
                 padding-top: 33px;
                 font-weight: bold;
             }
+
+            .kakao a{
+                display: none;
+            }
         }
 
         @media (max-width: 280px) {
+            .navbar-end{
+                display: none;
+            }
         {# 갤럭시폴드 #}
             .weather_info_width {
                 left: 53.5%;
@@ -245,6 +322,12 @@
                 font-size: 9px;
             }
 
+            .kakao a{
+                display: none;
+            }
+
+
+
         }
     </style>
 
@@ -254,19 +337,33 @@
 <div class="wrap">
     <div class="kakao"><a href="javascript:sendLink()" class=""></a></div>
     <div class="refresh"><a href="#" class="refresh_btn"></a></div>
-    <section class="hero is-primary is-small">
-        <div class="hero-body">
-            <p class="title">
-                항해 날씨
-            </p>
-            <p class="subtitle">
-                {{ today }}
+
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+
+
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+        <div class="navbar-end">
+            <p class="count-visitor">
+            {{ today }} <br>
+            today : 00 &nbsp;&nbsp;
+            total : 00
             </p>
         </div>
+
+    </nav>
+
+    <section class="hero is-small">
+            <a href="#" class="main_logo"><img src="../static/logo.png" alt="로고이미지"></a>
     </section>
+
     <div class="main_bg" style="background-image: url({{ background_image }});">
-        <article class="message">
-        </article>
+
 
         <div class="weather_info box weather_info_width">
             <p class="weather_info_text">닉네임위치의닉네임님의 위치는 {{ region }} {{ city }} 입니다.</p>
@@ -274,7 +371,7 @@
         </div>
 
     </div>
-    <div class="box bar_box_padding">
+    <div class="box bar_box_padding middle_box">
         <nav class="level is-mobile">
             <div class="level-item has-text-centered">
                 <div class="title_box">
@@ -441,11 +538,10 @@
     </article>
 
 
-    <footer class="footer">
+    <footer class="footer is-dark">
         <div class="content has-text-centered">
             <p>
-                <strong>항해날씨</strong> by 32조<a href="#">푸터영역입니다.</a>. The source code is licensed
-                <a href="#">MIT</a>
+                <strong>항해날씨</strong> by 32조
             </p>
         </div>
     </footer>
