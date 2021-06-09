@@ -92,7 +92,7 @@ def weather(lat, lon):
     if main == "Rain" or main == "Thunderstorm" or main == "Snow" or main == "Fog" or main == "Tornado":
         background_image = "https://i.pinimg.com/originals/0c/17/af/0c17afdc3841a2e112852745a8257983.jpg"
     elif main == "Clear" or main == "Clouds":
-        background_image = "http://cdn6.dissolve.com/p/D1201_30_001/D1201_30_001_0004_600.jpg"
+        background_image = "https://images.unsplash.com/photo-1593996663975-977407846c7d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
     else:
         background_image = "https://thumbs.dreamstime.com/b/ship-white-sails-waves-sea-ocean-marine-background-illustration-discovery-america-columbus-121516839.jpg"
 
