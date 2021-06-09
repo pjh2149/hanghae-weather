@@ -1,5 +1,196 @@
-.weatherComponent{
-    font-weight:bold;
-    color: red;
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: #000;
+    box-sizing: border-box;
+}
+
+body {
+    background: #ffffff;
+
+}
+
+a {
+    display: block;
+    text-decoration: none;
+}
+
+img {
+    display: block;
+}
+
+.wrap {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.main_bg {
+    width: 100%;
+    height: 550px;
+    background-image: url("../static/763246.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+.box {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: -50px;
+}
+
+.main_bg h1 {
+    text-align: center;
+    font-size: 3em;
+}
+
+.message {
+    width: 30%;
+    float: left;
+
+}
+
+.media {
+    width: 80%;
+    margin: 100px auto;
+}
+
+.weather_info {
+    width: 45%;
+    height: 100px;
+    margin-top: 340px;
+    margin-right: 40px;
+    float: right;
+    display: block;
+}
+
+.weather_info_text {
+    font-size: 1.2vw;
+}
+
+.weather_info p {
+    text-align: right;
+}
+
+.bar_padding {
+    padding-top: 35%;
+}
+
+.bar_padding_for_image_tag {
+    font-size: 15px;
+    font-weight: bold;
+    padding-top: 15%;
+}
+
+.title_size {
+    width: 64px;
+    margin-bottom: 50px;
+}
+
+.title_box {
+    height: 90px;
+}
+
+.bar_box_padding {
+    padding: 0.5%;
+}
+
+.weather_info_width {
+    width: max-content;
+    height: max-content;
+}
+
+@media (max-width: 1300px) {
+    .wrap {
+        width: 85%;
+    }
+
+    .weather_info_text {
+        font-size: 16px;
+    }
+
+}
+
+@media (max-width: 1024px) {
+    .weather_info_width {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .wrap {
+        width: 100%;
+    }
+}
+
+@media (max-width: 640px) {
+    .bar_padding {
+        font-size: 18px;
+    }
+
+    .weather_info_text {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 414px) {
+    .weather_info_width {
+        position: absolute;
+        padding: 9px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .weather_info_text {
+        font-size: 12px;
+    }
+
+    .title_phone {
+        font-size: 20px;
+    }
+
+    .bar_inner_div_height {
+        height: 50px;
+    }
+
+    .bar_padding {
+        font-size: 15px;
+        margin: 0 auto;
+        padding-top: 30px;
+        font-weight: bold;
+    }
+}
+
+@media (max-width: 320px) { {
+    # 아이폰5 #
+}
+    .weather_info_width {
+        padding: 6px;
+    }
+
+    .title_phone {
+        font-size: 17px;
+    }
+
+    .bar_padding {
+        font-size: 11px;
+        margin: 0 auto;
+        padding-top: 33px;
+        font-weight: bold;
+    }
+}
+
+@media (max-width: 280px) { {
+    # 갤럭시폴드 #
+}
+    .weather_info_width {
+        left: 53.5%;
+        padding: 2px;
+    }
+
+    .weather_info_text {
+        font-size: 9px;
+    }
+
 }
 
