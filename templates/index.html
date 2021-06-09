@@ -1,422 +1,463 @@
 <!DOCTYPE html>
 <html lang="ko">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!-- Bulma CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-        <!-- Font Awesome CSS -->
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <!-- Font Awesome CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Jua&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Jua&display=swap" rel="stylesheet">
 
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Jua&display=swap"
-              rel="stylesheet">
-        <!-- JS -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Jua&display=swap"
+          rel="stylesheet">
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
-        <script src="https://kit.fontawesome.com/ac418ea973.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/ac418ea973.js" crossorigin="anonymous"></script>
 
-        <title>항해 날씨</title>
+    <title>항해 날씨</title>
 
-        <style>
-            * {
-                margin: 0;
-                padding: 0;
-                list-style: none;
-                color: #000;
-                box-sizing: border-box;
-            }
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            color: #000;
+            box-sizing: border-box;
+        }
 
-            body {
-                background: #ffffff;
+        body {
+            background: #ffffff;
 
-            }
+        }
 
-            a {
-                display: block;
-                text-decoration: none;
-            }
+        a {
+            display: block;
+            text-decoration: none;
+        }
 
-            img {
-                display: block;
-            }
+        img {
+            display: block;
+        }
 
+        .wrap {
+            width: 70%;
+            margin: 0 auto;
+        }
+
+        .main_bg {
+            width: 100%;
+            height: 550px;
+            background-image: url("../static/763246.jpg");
+            background-size: cover;
+            background-position: center;
+        }
+
+        .box {
+            width: 80%;
+            margin: 0 auto;
+            margin-top: -50px;
+        }
+
+        .main_bg h1 {
+            text-align: center;
+            font-size: 3em;
+        }
+
+        .message {
+            width: 30%;
+            float: left;
+
+        }
+
+        .media {
+            width: 80%;
+            margin: 100px auto;
+        }
+
+        .weather_info {
+            width: 45%;
+            height: 100px;
+            margin-top: 340px;
+            margin-right: 40px;
+            float: right;
+            display: block;
+        }
+
+        .weather_info_text {
+            font-size: 1.2vw;
+        }
+
+        .weather_info p {
+            text-align: right;
+        }
+
+        .bar_padding {
+            padding-top: 35%;
+        }
+
+        .bar_padding_for_image_tag {
+            font-size: 15px;
+            font-weight: bold;
+            padding-top: 15%;
+        }
+
+        .title_size {
+            width: 64px;
+            margin-bottom: 50px;
+        }
+
+        .title_box {
+            height: 90px;
+        }
+
+        .bar_box_padding {
+            padding: 0.5%;
+        }
+
+        .weather_info_width {
+            width: max-content;
+            height: max-content;
+        }
+
+        .kakao a {
+            position: fixed;
+            display: block;
+            right: 10%;
+            bottom: 120px;
+            width: 50px;
+            height: 50px;
+            display: block;
+            background: #ccc;
+            border-radius: 100px;
+            background: url("../static/kakao2.jpg") no-repeat center;
+            background-size: cover;
+        }
+
+        .refresh a {
+            position: fixed;
+            display: block;
+            right: 10%;
+            bottom: 60px;
+            width: 50px;
+            height: 50px;
+            display: block;
+            background: #ccc;
+            border-radius: 100px;
+            background: url("../static/refresh_14433.png") no-repeat center;
+            background-size: cover;
+
+        }
+
+
+        @media (max-width: 1300px) {
             .wrap {
-                width: 70%;
-                margin: 0 auto;
-            }
-
-            .main_bg {
-                width: 100%;
-                height: 550px;
-                background-image: url("../static/763246.jpg");
-                background-size: cover;
-                background-position: center;
-            }
-
-            .box {
-                width: 80%;
-                margin: 0 auto;
-                margin-top: -50px;
-            }
-
-            .main_bg h1 {
-                text-align: center;
-                font-size: 3em;
-            }
-
-            .message {
-                width: 30%;
-                float: left;
-
-            }
-
-            .media {
-                width: 80%;
-                margin: 100px auto;
-            }
-
-            .weather_info {
-                width: 45%;
-                height: 100px;
-                margin-top: 340px;
-                margin-right: 40px;
-                float: right;
-                display: block;
+                width: 85%;
             }
 
             .weather_info_text {
-                font-size: 1.2vw;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .weather_info_width {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
             }
 
-            .weather_info p {
-                text-align: right;
+            .wrap {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .bar_padding {
+                font-size: 18px;
+            }
+
+            .weather_info_text {
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 414px) {
+            .weather_info_width {
+                position: absolute;
+                padding: 9px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .weather_info_text {
+                font-size: 12px;
+            }
+
+            .title_phone {
+                font-size: 20px;
+            }
+
+            .bar_inner_div_height {
+                height: 50px;
             }
 
             .bar_padding {
-                padding-top: 35%;
-            }
-
-            .bar_padding_for_image_tag {
                 font-size: 15px;
+                margin: 0 auto;
+                padding-top: 30px;
                 font-weight: bold;
-                padding-top: 15%;
             }
+        }
 
-            .title_size {
-                width: 64px;
-                margin-bottom: 50px;
-            }
-
-            .title_box {
-                height: 90px;
-            }
-
-            .bar_box_padding {
-                padding: 0.5%;
-            }
-
+        @media (max-width: 320px) {
+        {# 아이폰5 #}
             .weather_info_width {
-                width: max-content;
-                height: max-content;
+                padding: 6px;
             }
 
-            @media (max-width: 1300px) {
-                .wrap {
-                    width: 85%;
-                }
-
-                .weather_info_text {
-                    font-size: 16px;
-                }
+            .title_phone {
+                font-size: 17px;
             }
 
-            @media (max-width: 1024px) {
-                .weather_info_width {
-                    position: absolute;
-                    left: 50%;
-                    transform: translateX(-50%);
-                }
-                .wrap {
-                    width: 100%;
-                }
+            .bar_padding {
+                font-size: 11px;
+                margin: 0 auto;
+                padding-top: 33px;
+                font-weight: bold;
+            }
+        }
+
+        @media (max-width: 280px) {
+        {# 갤럭시폴드 #}
+            .weather_info_width {
+                left: 53.5%;
+                padding: 2px;
             }
 
-            @media (max-width: 640px) {
-                .bar_padding {
-                    font-size: 18px;
-                }
-
-                .weather_info_text {
-                    font-size: 15px;
-                }
+            .weather_info_text {
+                font-size: 9px;
             }
 
-            @media (max-width: 414px) {
-                .weather_info_width {
-                    position: absolute;
-                    padding: 9px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                }
+        }
+    </style>
 
-                .weather_info_text {
-                    font-size: 12px;
-                }
 
-                .title_phone {
-                    font-size: 20px;
-                }
+</head>
+<body>
+<div class="wrap">
+    <div class="kakao"><a href="javascript:sendLink()" class=""></a></div>
+    <div class="refresh"><a href="#" class="refresh_btn"></a></div>
+    <section class="hero is-primary is-small">
+        <div class="hero-body">
+            <p class="title">
+                항해 날씨
+            </p>
+            <p class="subtitle">
+                {{ today }}
+            </p>
+        </div>
+    </section>
+    <div class="main_bg" style="background-image: url({{ background_image }});">
+        <article class="message">
+        </article>
 
-                .bar_inner_div_height {
-                    height: 50px;
-                }
+        <div class="weather_info box weather_info_width">
+            <p class="weather_info_text">닉네임위치의닉네임님의 위치는 {{ region }} {{ city }} 입니다.</p>
+            <p class="description_padding">{{ description }}</p>
+        </div>
 
-                .bar_padding {
-                    font-size: 15px;
-                    margin: 0 auto;
-                    padding-top: 30px;
-                    font-weight: bold;
-                }
-            }
-
-            @media (max-width: 320px) {
-            {# 아이폰5 #}
-                .weather_info_width {
-                    padding: 6px;
-                }
-
-                .title_phone {
-                    font-size: 17px;
-                }
-
-                .bar_padding {
-                    font-size: 11px;
-                    margin: 0 auto;
-                    padding-top: 33px;
-                    font-weight: bold;
-                }
-            }
-
-            @media (max-width: 280px) {
-            {# 갤럭시폴드 #}
-                .weather_info_width {
-                    left: 53.5%;
-                    padding: 2px;
-                }
-
-                .weather_info_text {
-                    font-size: 9px;
-                }
-
-            }
-        </style>
-    </head>
-    <body>
-        <div class="wrap">
-            <section class="hero is-primary is-small">
-                <div class="hero-body">
-                    <p class="title">
-                        항해 날씨
+    </div>
+    <div class="box bar_box_padding">
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered">
+                <div class="title_box">
+                    <p class="title title_size">
+                        {% if image == "50d" or image == "50n" %}
+                            <img class="weatherIcon" src="http://openweathermap.org/img/wn/{{ image }}@2x.png">
+                        {% else %}
+                            <img src="/static/animated_weather/{{ image }}.svg" alt="">
+                        {% endif %}
                     </p>
-                    <p class="subtitle">
-                        {{ today }}
+                    <p class="subtitle bar_padding_for_image_tag">
+                        {% if image == "50d" or image == "50n" %}
+                            안개
+                        {% elif image == "13d" or image == "13n" %}
+                            눈
+                        {% elif image == "11d" or image == "11n" %}
+                            뇌우
+                        {% elif image == "10d" or image == "10n" %}
+                            비
+                        {% elif image == "09d" or image == "09n" %}
+                            소나기
+                        {% elif image == "04d" or image == "04n" %}
+                            구름 많음
+                        {% elif image == "03d" or image == "03n" %}
+                            구름 적음
+                        {% elif image == "02d" or image == "02n" %}
+                            흐림
+                        {% elif image == "01d" or image == "01n" %}
+                            맑음
+                        {% endif %}
                     </p>
                 </div>
-            </section>
-            <div class="main_bg" style="background-image: url({{ background_image }});">
-                <article class="message">
-                </article>
-
-                <div class="weather_info box weather_info_width">
-                        <p class="weather_info_text">닉네임위치의닉네임님의 위치는 {{ region }} {{ city }} 입니다.</p>
-                        <p class="description_padding">{{ description }}</p>
-                </div>
-
             </div>
-            <div class="box bar_box_padding">
-                <nav class="level is-mobile">
-                    <div class="level-item has-text-centered">
-                        <div class="title_box">
-                            <p class="title title_size">
-                                {% if image == "50d" or image == "50n" %}
-                                <img class="weatherIcon" src="http://openweathermap.org/img/wn/{{ image }}@2x.png">
-                                {% else %}
-                                <img src="/static/animated_weather/{{ image }}.svg" alt="">
-                                {% endif %}
-                            </p>
-                            <p class="subtitle bar_padding_for_image_tag">
-                                {% if image == "50d" or image == "50n" %}
-                                안개
-                                {% elif image == "13d" or image == "13n" %}
-                                눈
-                                {% elif image == "11d" or image == "11n" %}
-                                뇌우
-                                {% elif image == "10d" or image == "10n" %}
-                                비
-                                {% elif image == "09d" or image == "09n" %}
-                                소나기
-                                {% elif image == "04d" or image == "04n" %}
-                                구름 많음
-                                {% elif image == "03d" or image == "03n" %}
-                                구름 적음
-                                {% elif image == "02d" or image == "02n" %}
-                                흐림
-                                {% elif image == "01d" or image == "01n" %}
-                                맑음
-                                {% endif %}
-                            </p>
-                        </div>
+            <div class="level-item has-text-centered">
+                <div class="bar_inner_div_height">
+                    <p class="title title_phone">온도</p>
+                    <p class="subtitle bar_padding">{{ temperature }}℃</p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered">
+                <div class="bar_inner_div_height">
+                    <p class="title title_phone">습도</p>
+                    <p class="subtitle bar_padding">{{ humidity }}%</p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered">
+                <div class="bar_inner_div_height">
+                    <p class="title title_phone">풍속</p>
+                    <p class="subtitle bar_padding">{{ wind_speed }}m/s</p>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <article class="media">
+        <figure class="media-left">
+            <p class="image is-64x64">
+                <img src="https://bulma.io/images/placeholders/128x128.png">
+            </p>
+        </figure>
+        <div class="media-content">
+            <div class="field">
+                <p class="control">
+                    <textarea class="textarea" placeholder="Add a comment..."></textarea>
+                </p>
+            </div>
+            <nav class="level">
+                <div class="level-left">
+                    <div class="level-item">
+                        <a class="button is-info">Submit</a>
                     </div>
-                    <div class="level-item has-text-centered">
-                        <div class="bar_inner_div_height">
-                            <p class="title title_phone">온도</p>
-                            <p class="subtitle bar_padding">{{ temperature }}℃</p>
-                        </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <label class="checkbox">
+                            <input type="checkbox"> Press enter to submit
+                        </label>
                     </div>
-                    <div class="level-item has-text-centered">
-                        <div class="bar_inner_div_height">
-                            <p class="title title_phone">습도</p>
-                            <p class="subtitle bar_padding">{{ humidity }}%</p>
-                        </div>
-                    </div>
-                    <div class="level-item has-text-centered">
-                        <div class="bar_inner_div_height">
-                            <p class="title title_phone">풍속</p>
-                            <p class="subtitle bar_padding">{{ wind_speed }}m/s</p>
-                        </div>
-                    </div>
-                </nav>
+                </div>
+            </nav>
+        </div>
+    </article>
+
+
+    <article class="media">
+        <figure class="media-left">
+            <p class="image is-64x64">
+                <img src="https://bulma.io/images/placeholders/128x128.png">
+            </p>
+        </figure>
+        <div class="media-content">
+            <div class="content">
+                <p>
+                    <strong>Barbara Middleton</strong>
+                    <br>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis porta eros lacus, nec
+                    ultricies elit
+                    blandit non. Suspendisse pellentesque mauris sit amet dolor blandit rutrum. Nunc in tempus
+                    turpis.
+                    <br>
+                    <small><a>Like</a> · <a>Reply</a> · 3 hrs</small>
+                </p>
             </div>
 
             <article class="media">
                 <figure class="media-left">
-                    <p class="image is-64x64">
-                        <img src="https://bulma.io/images/placeholders/128x128.png">
-                    </p>
-                </figure>
-                <div class="media-content">
-                    <div class="field">
-                        <p class="control">
-                            <textarea class="textarea" placeholder="Add a comment..."></textarea>
-                        </p>
-                    </div>
-                    <nav class="level">
-                        <div class="level-left">
-                            <div class="level-item">
-                                <a class="button is-info">Submit</a>
-                            </div>
-                        </div>
-                        <div class="level-right">
-                            <div class="level-item">
-                                <label class="checkbox">
-                                    <input type="checkbox"> Press enter to submit
-                                </label>
-                            </div>
-                        </div>
-                    </nav>
-                </div>
-            </article>
-
-
-            <article class="media">
-                <figure class="media-left">
-                    <p class="image is-64x64">
-                        <img src="https://bulma.io/images/placeholders/128x128.png">
+                    <p class="image is-48x48">
+                        <img src="https://bulma.io/images/placeholders/96x96.png">
                     </p>
                 </figure>
                 <div class="media-content">
                     <div class="content">
                         <p>
-                            <strong>Barbara Middleton</strong>
+                            <strong>Sean Brown</strong>
                             <br>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis porta eros lacus, nec
-                            ultricies elit
-                            blandit non. Suspendisse pellentesque mauris sit amet dolor blandit rutrum. Nunc in tempus
-                            turpis.
+                            Donec sollicitudin urna eget eros malesuada sagittis. Pellentesque habitant morbi
+                            tristique
+                            senectus et netus et malesuada fames ac turpis egestas. Aliquam blandit nisl a nulla
+                            sagittis, a lobortis leo feugiat.
                             <br>
-                            <small><a>Like</a> · <a>Reply</a> · 3 hrs</small>
+                            <small><a>Like</a> · <a>Reply</a> · 2 hrs</small>
                         </p>
                     </div>
 
                     <article class="media">
-                        <figure class="media-left">
-                            <p class="image is-48x48">
-                                <img src="https://bulma.io/images/placeholders/96x96.png">
-                            </p>
-                        </figure>
-                        <div class="media-content">
-                            <div class="content">
-                                <p>
-                                    <strong>Sean Brown</strong>
-                                    <br>
-                                    Donec sollicitudin urna eget eros malesuada sagittis. Pellentesque habitant morbi
-                                    tristique
-                                    senectus et netus et malesuada fames ac turpis egestas. Aliquam blandit nisl a nulla
-                                    sagittis, a lobortis leo feugiat.
-                                    <br>
-                                    <small><a>Like</a> · <a>Reply</a> · 2 hrs</small>
-                                </p>
-                            </div>
-
-                            <article class="media">
-                                Vivamus quis semper metus, non tincidunt dolor. Vivamus in mi eu lorem cursus
-                                ullamcorper sit
-                                amet nec massa.
-                            </article>
-
-                            <article class="media">
-                                Morbi vitae diam et purus tincidunt porttitor vel vitae augue. Praesent malesuada metus
-                                sed
-                                pharetra euismod. Cras tellus odio, tincidunt iaculis diam non, porta aliquet tortor.
-                            </article>
-                        </div>
+                        Vivamus quis semper metus, non tincidunt dolor. Vivamus in mi eu lorem cursus
+                        ullamcorper sit
+                        amet nec massa.
                     </article>
 
                     <article class="media">
-                        <figure class="media-left">
-                            <p class="image is-48x48">
-                                <img src="https://bulma.io/images/placeholders/96x96.png">
-                            </p>
-                        </figure>
-                        <div class="media-content">
-                            <div class="content">
-                                <p>
-                                    <strong>Kayli Eunice </strong>
-                                    <br>
-                                    Sed convallis scelerisque mauris, non pulvinar nunc mattis vel. Maecenas varius
-                                    felis sit
-                                    amet magna vestibulum euismod malesuada cursus libero. Vestibulum ante ipsum primis
-                                    in
-                                    faucibus orci luctus et ultrices posuere cubilia Curae; Phasellus lacinia non nisl
-                                    id
-                                    feugiat.
-                                    <br>
-                                    <small><a>Like</a> · <a>Reply</a> · 2 hrs</small>
-                                </p>
-                            </div>
-                        </div>
+                        Morbi vitae diam et purus tincidunt porttitor vel vitae augue. Praesent malesuada metus
+                        sed
+                        pharetra euismod. Cras tellus odio, tincidunt iaculis diam non, porta aliquet tortor.
                     </article>
                 </div>
             </article>
 
-
-            <footer class="footer">
-                <div class="content has-text-centered">
-                    <p>
-                        <strong>항해날씨</strong> by 32조<a href="#">푸터영역입니다.</a>. The source code is licensed
-                        <a href="#">MIT</a>.
+            <article class="media">
+                <figure class="media-left">
+                    <p class="image is-48x48">
+                        <img src="https://bulma.io/images/placeholders/96x96.png">
                     </p>
+                </figure>
+                <div class="media-content">
+                    <div class="content">
+                        <p>
+                            <strong>Kayli Eunice </strong>
+                            <br>
+                            Sed convallis scelerisque mauris, non pulvinar nunc mattis vel. Maecenas varius
+                            felis sit
+                            amet magna vestibulum euismod malesuada cursus libero. Vestibulum ante ipsum primis
+                            in
+                            faucibus orci luctus et ultrices posuere cubilia Curae; Phasellus lacinia non nisl
+                            id
+                            feugiat.
+                            <br>
+                            <small><a>Like</a> · <a>Reply</a> · 2 hrs</small>
+                        </p>
+                    </div>
                 </div>
-            </footer>
-
-
+            </article>
         </div>
+    </article>
 
-    </body>
+
+    <footer class="footer">
+        <div class="content has-text-centered">
+            <p>
+                <strong>항해날씨</strong> by 32조<a href="#">푸터영역입니다.</a>. The source code is licensed
+                <a href="#">MIT</a>
+            </p>
+        </div>
+    </footer>
+
+
+</div>
+
+<script>
+    $(".refresh_btn").click(function (e) {
+        e.preventDefault();
+        window.location.reload();
+    });
+</script>
+</body>
 </html>
