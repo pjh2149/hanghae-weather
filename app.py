@@ -44,6 +44,7 @@ def home():
                                humidity=weather_index[3], image=weather_index[4], main=weather_index[5], background_image=weather_index[6],
                                visitors_today=list(db.todayCounter.find({}, {'_id': False})),
                                visitors_total=list(db.visitorCounter.find({}, {'_id': False})), today=today)
+
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:

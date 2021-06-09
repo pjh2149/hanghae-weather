@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <link rel="shortcut icon" type="image/x-icon" href="../static/fabicon.ico" />
     <!-- Bulma CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <!-- Font Awesome CSS -->
@@ -450,8 +450,8 @@
         <div class="navbar-end">
             <p class="count-visitor">
                 {{ today }} <br>
-                today : 00 &nbsp;&nbsp;
-                total : 00
+                today : {{ visitors_today }}&nbsp;&nbsp;
+                total : {{ visitors_total }}
             </p>
         </div>
 
@@ -472,7 +472,7 @@
 
 
         <div class="weather_info box weather_info_width">
-            <p class="weather_info_text">닉네임위치의닉네임님의 위치는 {{ region }} {{ city }} 입니다.</p>
+            <p class="weather_info_text">{{ nickname_receive }}님의 위치는 {{ region }} {{ city }} 입니다.</p>
             <p class="description_padding">{{ description }}</p>
         </div>
 
@@ -659,6 +659,7 @@
     $(".refresh_btn").click(function (e) {
         e.preventDefault();
         window.location.reload();
+        scrollTo(0,0);
     });
 
     $(".navbar-burger").click(function (e){
