@@ -11,8 +11,8 @@ app = Flask(__name__)
 
 def sel_IP():
 
-    # ip_address = "218.233.45.33"
-    ip_address = flask.request.remote_addr
+    ip_address = "218.233.45.33"
+    # ip_address = flask.request.remote_addr
 
     def sel():
         options = webdriver.ChromeOptions()
