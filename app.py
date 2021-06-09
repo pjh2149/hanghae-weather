@@ -27,6 +27,7 @@ def home():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+
         ip_index = list()
         weather_index = list()
 
@@ -49,6 +50,7 @@ def home():
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
 
 
 @app.route('/login')
@@ -150,6 +152,7 @@ def get_posts():
         return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다."})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
+
 
 
 @app.route('/update_like', methods=['POST'])
