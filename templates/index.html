@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
         <!-- Font Awesome CSS -->
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Jua&display=swap" rel="stylesheet">
 
@@ -18,8 +19,9 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
-        <title>항해 날씨 - 메인페이지</title>
+        <script src="https://kit.fontawesome.com/ac418ea973.js" crossorigin="anonymous"></script>
 
+        <title>항해 날씨</title>
 
         <style>
             * {
@@ -80,11 +82,16 @@
             }
 
             .weather_info {
+                width: 45%;
                 height: 100px;
                 margin-top: 340px;
                 margin-right: 40px;
                 float: right;
                 display: block;
+            }
+
+            .weather_info_text {
+                font-size: 1.2vw;
             }
 
             .weather_info p {
@@ -93,6 +100,120 @@
 
             .bar_padding {
                 padding-top: 35%;
+            }
+
+            .bar_padding_for_image_tag {
+                font-size: 15px;
+                font-weight: bold;
+                padding-top: 15%;
+            }
+
+            .title_size {
+                width: 64px;
+                margin-bottom: 50px;
+            }
+
+            .title_box {
+                height: 90px;
+            }
+
+            .bar_box_padding {
+                padding: 0.5%;
+            }
+
+            .weather_info_width {
+                width: max-content;
+                height: max-content;
+            }
+
+            @media (max-width: 1300px) {
+                .wrap {
+                    width: 85%;
+                }
+
+                .weather_info_text {
+                    font-size: 16px;
+                }
+            }
+
+            @media (max-width: 1024px) {
+                .weather_info_width {
+                    position: absolute;
+                    left: 50%;
+                    transform: translateX(-50%);
+                }
+                .wrap {
+                    width: 100%;
+                }
+            }
+
+            @media (max-width: 640px) {
+                .bar_padding {
+                    font-size: 18px;
+                }
+
+                .weather_info_text {
+                    font-size: 15px;
+                }
+            }
+
+            @media (max-width: 414px) {
+                .weather_info_width {
+                    position: absolute;
+                    padding: 9px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                }
+
+                .weather_info_text {
+                    font-size: 12px;
+                }
+
+                .title_phone {
+                    font-size: 20px;
+                }
+
+                .bar_inner_div_height {
+                    height: 50px;
+                }
+
+                .bar_padding {
+                    font-size: 15px;
+                    margin: 0 auto;
+                    padding-top: 30px;
+                    font-weight: bold;
+                }
+            }
+
+            @media (max-width: 320px) {
+            {# 아이폰5 #}
+                .weather_info_width {
+                    padding: 6px;
+                }
+
+                .title_phone {
+                    font-size: 17px;
+                }
+
+                .bar_padding {
+                    font-size: 11px;
+                    margin: 0 auto;
+                    padding-top: 33px;
+                    font-weight: bold;
+                }
+            }
+
+            @media (max-width: 280px) {
+            {# 갤럭시폴드 #}
+                .weather_info_width {
+                    left: 53.5%;
+                    padding: 2px;
+                }
+
+                .weather_info_text {
+                    font-size: 9px;
+                }
+
             }
         </style>
     </head>
@@ -112,35 +233,61 @@
                 <article class="message">
                 </article>
 
-                <div class="weather_info box">
-                    <p class="subtitle">{{ nickname }}님의 위치는 {{ region }} {{ city }} 입니다.</p>
-                    <p class="description_padding">{{ description }}</p>
-
+                <div class="weather_info box weather_info_width">
+                        <p class="weather_info_text">닉네임위치의닉네임님의 위치는 {{ region }} {{ city }} 입니다.</p>
+                        <p class="description_padding">{{ description }}</p>
                 </div>
 
             </div>
-            <div class="box">
+            <div class="box bar_box_padding">
                 <nav class="level is-mobile">
                     <div class="level-item has-text-centered">
-                        <div>
-                            <img class="weatherIcon" src="http://openweathermap.org/img/wn/{{ image }}@2x.png">
+                        <div class="title_box">
+                            <p class="title title_size">
+                                {% if image == "50d" or image == "50n" %}
+                                <img class="weatherIcon" src="http://openweathermap.org/img/wn/{{ image }}@2x.png">
+                                {% else %}
+                                <img src="/static/animated_weather/{{ image }}.svg" alt="">
+                                {% endif %}
+                            </p>
+                            <p class="subtitle bar_padding_for_image_tag">
+                                {% if image == "50d" or image == "50n" %}
+                                안개
+                                {% elif image == "13d" or image == "13n" %}
+                                눈
+                                {% elif image == "11d" or image == "11n" %}
+                                뇌우
+                                {% elif image == "10d" or image == "10n" %}
+                                비
+                                {% elif image == "09d" or image == "09n" %}
+                                소나기
+                                {% elif image == "04d" or image == "04n" %}
+                                구름 많음
+                                {% elif image == "03d" or image == "03n" %}
+                                구름 적음
+                                {% elif image == "02d" or image == "02n" %}
+                                흐림
+                                {% elif image == "01d" or image == "01n" %}
+                                맑음
+                                {% endif %}
+                            </p>
                         </div>
                     </div>
                     <div class="level-item has-text-centered">
-                        <div>
-                            <p class="title">온도</p>
+                        <div class="bar_inner_div_height">
+                            <p class="title title_phone">온도</p>
                             <p class="subtitle bar_padding">{{ temperature }}℃</p>
                         </div>
                     </div>
                     <div class="level-item has-text-centered">
-                        <div>
-                            <p class="title">습도</p>
+                        <div class="bar_inner_div_height">
+                            <p class="title title_phone">습도</p>
                             <p class="subtitle bar_padding">{{ humidity }}%</p>
                         </div>
                     </div>
                     <div class="level-item has-text-centered">
-                        <div>
-                            <p class="title">풍속</p>
+                        <div class="bar_inner_div_height">
+                            <p class="title title_phone">풍속</p>
                             <p class="subtitle bar_padding">{{ wind_speed }}m/s</p>
                         </div>
                     </div>

@@ -19,7 +19,7 @@ app = Flask(__name__)
 
 def IP():
     ip_address = flask.request.remote_addr
-    req = Request("https://whatismyipaddress.com/ip/61.74.92.38", headers={'User-Agent': 'Mozilla/5.0'})  # IP 테스트 코드
+    req = Request("https://whatismyipaddress.com/ip/123.111.11.87", headers={'User-Agent': 'Mozilla/5.0'})  # IP 테스트 코드
     # req = Request("https://whatismyipaddress.com/ip/" + ip_address, headers={'User-Agent': 'Mozilla/5.0'})  # 실제 실행되어야하는 코드
 
     response = urlopen(req).read()
