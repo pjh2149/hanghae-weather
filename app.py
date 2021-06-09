@@ -1,3 +1,5 @@
+import threading
+
 import jwt
 import datetime
 import hashlib
@@ -18,7 +20,7 @@ app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
 SECRET_KEY = 'SPARTA'
 
 # client = MongoClient('mongodb://test:test@localhost', 27017)
-client = MongoClient('localhost', 27017)  # 개인테스트용
+client = MongoClient('localhost', 27017)
 db = client.dbsparta
 
 
@@ -31,8 +33,11 @@ def home():
         ip_index = list()
         weather_index = list()
 
-        for i in IP_setup.IP():
-            ip_index.append(i)
+        def ip_index_thread():
+            for i in IP_setup.sel_IP():
+                ip_index.append(i)
+
+        threading.Thread(target=ip_index_thread()).start()
 
         for j in IP_setup.weather(ip_index[0][0], ip_index[0][1]):  # lat, lon
             weather_index.append(j)
@@ -40,7 +45,7 @@ def home():
         visitors_counter.visitors()
         today = str(datetime.now()).split(' ')[0]
 
-        return render_template('index.html', region=ip_index[1], city=ip_index[2],
+        return render_template('index.html', address=ip_index[1],
                                temperature=weather_index[0], description=weather_index[1], wind_speed=weather_index[2],
                                humidity=weather_index[3], image=weather_index[4], main=weather_index[5], background_image=weather_index[6],
                                visitors_today=list(db.todayCounter.find({}, {'_id': False})),

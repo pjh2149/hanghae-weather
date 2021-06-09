@@ -2,8 +2,8 @@ import warnings
 
 from pymongo import MongoClient
 
-# client = MongoClient('mongodb://test:test@localhost', 27017)  # 서버용
-client = MongoClient('localhost', 27017)  # 개인테스트용
+# client = MongoClient('mongodb://test:test@localhost', 27017)
+client = MongoClient('localhost', 27017)
 db = client.dbsparta
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)

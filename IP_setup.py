@@ -1,79 +1,61 @@
+import threading
+
 import flask
 import requests
 
-from urllib.request import Request, urlopen
 from flask import Flask
 from bs4 import BeautifulSoup
-
-
-def translator(text):
-    request_url = "https://openapi.naver.com/v1/papago/n2mt"
-    headers = {"X-Naver-Client-Id": "rcKyc1EaWsLVqa7_KMcV", "X-Naver-Client-Secret": "S0Xt7xUDbk"}
-    params = {"source": "en", "target": "ko", "text": text}
-    response = requests.post(request_url, headers=headers, data=params)
-    return response.json()['message']['result']['translatedText']
-
-def translator2(text):
-    request_url = "https://openapi.naver.com/v1/papago/n2mt"
-    headers = {"X-Naver-Client-Id": "vkiqbYUMOxV5kvNjSelf", "X-Naver-Client-Secret": "yTOQNBsIwq"}
-    params = {"source": "en", "target": "ko", "text": text}
-    response = requests.post(request_url, headers=headers, data=params)
-    return response.json()['message']['result']['translatedText']
-
-def translator3(text):
-    request_url = "https://openapi.naver.com/v1/papago/n2mt"
-    headers = {"X-Naver-Client-Id": "6uSpE4vIWa6ayIFlERQD", "X-Naver-Client-Secret": "8SqYAfF8W5"}
-    params = {"source": "en", "target": "ko", "text": text}
-    response = requests.post(request_url, headers=headers, data=params)
-    return response.json()['message']['result']['translatedText']
-
+from selenium import webdriver
 
 app = Flask(__name__)
 
+def sel_IP():
 
-def IP():
+    # ip_address = "218.233.45.33"
     ip_address = flask.request.remote_addr
-    req = Request("https://whatismyipaddress.com/ip/123.111.11.87", headers={'User-Agent': 'Mozilla/5.0'})  # IP 테스트 코드
-    # req = Request("https://whatismyipaddress.com/ip/" + ip_address, headers={'User-Agent': 'Mozilla/5.0'})  # 실제 실행되어야하는 코드
 
-    response = urlopen(req).read()
-    soup = BeautifulSoup(response, 'html.parser')
+    def sel():
+        options = webdriver.ChromeOptions()
+        options.add_argument("headless")
+        driver = webdriver.Chrome('chromedriver', options=options)
+        # driver = webdriver.Chrome('chromedriver')
+        driver.get("https://mylocation.co.kr/")
+        driver.implicitly_wait(0.3)
 
-    region_str = str(soup.select(
-        "#fl-post-1165 > div > div > div.fl-row.fl-row-fixed-width.fl-row-bg-none.fl-node-5d9c0c38837c0 > div > div.fl-row-content.fl-row-fixed-width.fl-node-content > div > div.fl-col.fl-node-5d9c0c3888731 > div > div.fl-module.fl-module-wipa-static-html.fl-node-5d9e84c8187fe > div > div > div > div > div.left > p:nth-child(11) > span:nth-child(2)")[
-                         0])
-    city_str = str(soup.select(
-        "#fl-post-1165 > div > div > div.fl-row.fl-row-fixed-width.fl-row-bg-none.fl-node-5d9c0c38837c0 > div > div.fl-row-content.fl-row-fixed-width.fl-node-content > div > div.fl-col.fl-node-5d9c0c3888731 > div > div.fl-module.fl-module-wipa-static-html.fl-node-5d9e84c8187fe > div > div > div > div > div.left > p:nth-child(12) > span:nth-child(2)")[
-                       0])
-    coordinate_x_str = str(soup.select(
-        "#fl-post-1165 > div > div > div.fl-row.fl-row-fixed-width.fl-row-bg-none.fl-node-5d9c0c38837c0 > div > div.fl-row-content.fl-row-fixed-width.fl-node-content > div > div.fl-col.fl-node-5d9c0c3888731 > div > div.fl-module.fl-module-wipa-static-html.fl-node-5d9e84c8187fe > div > div > div > div > div.right > p:nth-child(2) > span:nth-child(2)")[
-                               0])
-    coordinate_y_str = str(soup.select(
-        "#fl-post-1165 > div > div > div.fl-row.fl-row-fixed-width.fl-row-bg-none.fl-node-5d9c0c38837c0 > div > div.fl-row-content.fl-row-fixed-width.fl-node-content > div > div.fl-col.fl-node-5d9c0c3888731 > div > div.fl-module.fl-module-wipa-static-html.fl-node-5d9e84c8187fe > div > div > div > div > div.right > p:nth-child(3) > span:nth-child(2)")[
-                               0])
-    # postcode_str = str(soup.select("#fl-post-1165 > div > div > div.fl-row.fl-row-fixed-width.fl-row-bg-none.fl-node-5d9c0c38837c0 > div > div.fl-row-content.fl-row-fixed-width.fl-node-content > div > div.fl-col.fl-node-5d9c0c3888731 > div > div.fl-module.fl-module-wipa-static-html.fl-node-5d9e84c8187fe > div > div > div > div > div.right > p:nth-child(4) > span:nth-child(2)")[0])
+        element = driver.find_element_by_xpath('//*[@id="txtAddr"]')
+        element.send_keys(ip_address)
 
-    region = region_str.replace('<span>', "").replace('</span>', "")
-    city = city_str.replace('<span>', "").replace('</span>', "")
-    coordinate = (coordinate_x_str.replace('<span>', "").replace('</span>', "").split(u'\xa0')[0],
-                  coordinate_y_str.replace('<span>', "").replace('</span>', "").split(u'\xa0')[0])
-    # postcode = postcode_str.replace('<span>', "").replace('</span>', "")
+        driver.implicitly_wait(0.3)
 
-    try:
-        region_korean = translator(region)
-        city_korean = translator(city)
-    except KeyError:
         try:
-            region_korean = translator2(region)
-            city_korean = translator2(city)
-        except KeyError:
-            region_korean = translator3(region)
-            city_korean = translator3(city)
+            search_button = driver.find_element_by_xpath('//*[@id="btnAddr2"]')
+            search_button.click()
+            driver.implicitly_wait(0.5)
 
-    print(coordinate)
+        except:
+            search_button = driver.find_element_by_xpath('// *[ @ id = "table2"] / tbody / tr[5] / td[2] / a')
+            search_button.click()
 
-    return [coordinate, region_korean, city_korean]
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        address_split = soup.select_one('#lbAddr').text.split(" ")
+        address_fullname = address_split[0] + " "+ address_split[1]
 
+        driver.quit()
+
+        return address_fullname
+
+    def IP():
+        r = requests.get(f"http://api.ipstack.com/{ip_address}?access_key=1a9cbe93c186352fe31f85507d226bb8&format=1",headers={'User-Agent': 'Mozilla/5.0'})
+        result = r.json()
+        lat = round(result["latitude"], 6)
+        lon = round(result["longitude"], 6)
+
+        return [lat, lon]
+
+    coordinate = IP()
+    address = sel()
+
+    return [coordinate, address]
 
 def weather(lat, lon):
     r = requests.get(
