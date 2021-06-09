@@ -18,9 +18,23 @@
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 
     <script src="https://kit.fontawesome.com/ac418ea973.js" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        Kakao.init('a03c10d32f60b8eeeac95469defb73fe');
 
+        function sendLink() { // 카카오톡 공유하기
+            Kakao.Link.sendDefault({
+                objectType: 'text',
+                text: "?",
+                link: {
+                    mobileWebUrl: 'https://developers.kakao.com/docs/js/kakaotalklink#텍스트-템플릿-보내기',
+                    webUrl: 'https://developers.kakao.com/docs/js/kakaotalklink#텍스트-템플릿-보내기',
+                },
+            })
+        }
+    </script>
     <title>항해 날씨</title>
 
     <style>
