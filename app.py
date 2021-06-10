@@ -36,7 +36,7 @@ def home():
 
         visitors_counter.visitors()
         today = str(datetime.now()).split(' ')[0]
-        print("날짜, 방문자 업데이트")
+
         return render_template('index.html', address=ip_index[1],
                                temperature=weather_index[0], description=weather_index[1], wind_speed=weather_index[2],
                                humidity=weather_index[3], image=weather_index[4], main=weather_index[5], background_image=weather_index[6],
