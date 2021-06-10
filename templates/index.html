@@ -155,6 +155,26 @@
 
         }
 
+        .logout_btn {
+            width: 100%;
+            height: 50px;
+            position: relative;
+        }
+
+        .logout_btn a {
+            width: 10%;
+            position: absolute;
+            right: 2%;
+            color: #333 !important;
+
+        }
+
+        .logout_btn a:hover, a:hover .fa-sign-out{
+            color: cornflowerblue !important;
+            transition: all 0.3s;
+        }
+
+
         .main_bg {
             width: 100%;
             height: 550px;
@@ -376,11 +396,11 @@
             height: 100%;
         }
 
-        .write_box{
+        .write_box {
             margin-top: 130px;
         }
 
-        .comment_box{
+        .comment_box {
             margin-bottom: 100px;
         }
 
@@ -396,7 +416,8 @@
             .weather_info_text {
                 font-size: 16px;
             }
-            .weather_text{
+
+            .weather_text {
                 font-size: 1.7em !important;
             }
 
@@ -418,18 +439,19 @@
                 width: 100%;
             }
 
-            .weather_text{
+            .weather_text {
                 font-size: 1.7em !important;
             }
         }
 
         @media (max-width: 640px) {
 
-            .main_logo{
+            .main_logo {
                 width: 50% !important;
                 margin-bottom: 30px;
             }
-            .main_logo img{
+
+            .main_logo img {
                 width: 100% !important;
             }
 
@@ -442,7 +464,7 @@
                 font-size: 18px;
             }
 
-            .weather_text{
+            .weather_text {
                 font-size: 1.7em !important;
             }
 
@@ -464,14 +486,14 @@
         }
 
         @media (max-width: 414px) {
-            .main_logo{
+            .main_logo {
                 width: 50% !important;
                 margin-bottom: 30px;
             }
-            .main_logo img{
+
+            .main_logo img {
                 width: 100% !important;
             }
-
 
 
             .navbar-end {
@@ -486,7 +508,7 @@
             }
 
 
-            .weather_text{
+            .weather_text {
                 font-size: 1.7em !important;
             }
 
@@ -518,15 +540,14 @@
 
         @media (max-width: 320px) {
 
-            .main_logo{
+            .main_logo {
                 width: 50% !important;
                 margin-bottom: 30px;
             }
-            .main_logo img{
+
+            .main_logo img {
                 width: 100% !important;
             }
-
-
 
 
             .navbar-end {
@@ -538,12 +559,11 @@
             }
 
 
-
             .description_padding {
                 font-size: 1em !important;
             }
 
-            .weather_text{
+            .weather_text {
                 font-size: 1.7em !important;
             }
 
@@ -566,15 +586,16 @@
         }
 
         @media (max-width: 280px) {
-            .main_logo{
+            .main_logo {
                 width: 50% !important;
                 margin-bottom: 30px;
             }
-            .main_logo img{
+
+            .main_logo img {
                 width: 100% !important;
             }
 
-            .weather_text{
+            .weather_text {
                 font-size: 3em !important;
             }
 
@@ -626,8 +647,8 @@
                 total : {{ visitors_total }}
             </p>
         </div>
-
     </nav>
+
 
     <div class="mo-slide">
         <a href="#" class="close"></a>
@@ -639,6 +660,13 @@
     <section class="hero is-small">
         <a href="#" class="main_logo"><img src="../static/logo.png" alt="로고이미지"></a>
     </section>
+
+    <div class="logout_btn">
+        <a class="button level-item has-text-centered is-white" aria-label="logout" onclick="sign_out()">
+            로그아웃&nbsp;&nbsp;&nbsp;<span class="icon is-small"><i class="fa fa-sign-out" aria-hidden="true"></i></span>
+        </a>
+    </div>
+
 
     <div class="main_bg" style="background-image: url({{ background_image }});">
 
@@ -773,6 +801,12 @@
         $(".mo-slide").removeClass("ison");
 
     });
+
+    function sign_out() {
+        $.removeCookie('mytoken', {path: '/'});
+        alert('로그아웃');
+        window.location.href = "/login";
+    }
 </script>
 </body>
 </html>
