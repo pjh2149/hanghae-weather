@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" type="image/x-icon" href="../static/fabicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="../static/fabicon.ico"/>
     <!-- Bulma CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <!-- Font Awesome CSS -->
@@ -36,6 +36,84 @@
                 },
             })
         }
+
+        function post() {
+            let comment = $("#textarea-post").val()
+            let today = new Date().toISOString()
+            $.ajax({
+                type: "POST",
+                url: "/posting",
+                data: {
+                    comment_give: comment,
+                    date_give: today
+                },
+                success: function (response) {
+                    alert(response['msg'])
+                    window.location.reload()
+                    console.log(comment)
+                }
+            })
+        }
+
+        function time2str(date) {
+            let today = new Date()
+            let time = (today - date) / 1000 / 60  // 분
+
+            if (time < 60) {
+                return parseInt(time) + "분 전"
+            }
+            time = time / 60  // 시간
+            if (time < 24) {
+                return parseInt(time) + "시간 전"
+            }
+            time = time / 24
+            if (time < 7) {
+                return parseInt(time) + "일 전"
+            }
+            return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`
+        }
+
+        function get_posts() {
+            $("#post-box").empty()
+            $.ajax({
+                type: "GET",
+                url: "/get_posts",
+                data: {},
+                success: function (response) {
+                    if (response["result"] == "success") {
+                        let posts = response["posts"]
+                        for (let i = 0; i < posts.length; i++) {
+                            let post = posts[i]
+                            let time_post = new Date(post["date"])
+                            let time_before = time2str(time_post)
+                            let html_temp = `<article class="media">
+                                                    <figure  id="post-box" class="media-left">
+                                                        <p class="image is-64x64">
+                                                            <img src="{{ url_for('static', filename=user_info.profile_pic_real) }}">
+                                                        </p>
+                                                    </figure>
+                                                    <div class="media-content">
+                                                        <div class="content">
+                                                            <p>
+                                                                <strong>${post['nickname']}</strong> <small>${time_before}</small>
+                                                                <br>
+                                                                ${post['comment']}
+                                                                <br>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </article>`
+                            $("#post-box").append(html_temp)
+                        }
+                    }
+                }
+            })
+        }
+
+        $(document).ready(function () {
+            get_posts()
+        })
+
     </script>
     <title>항해 날씨</title>
 
@@ -88,7 +166,7 @@
 
 
         .media {
-            width: 80%;
+            width: 80vw;
             margin: 100px auto;
         }
 
@@ -117,7 +195,7 @@
             padding-top: 35%;
         }
 
-        .lastitem{
+        .lastitem {
             padding-top: 25%;
         }
 
@@ -225,7 +303,7 @@
             display: none;
         }
 
-        .mo-slide.ison{
+        .mo-slide.ison {
             opacity: 1;
             transform: rotateX(500px);
             transition: all 0.4s;
@@ -264,19 +342,33 @@
         }
 
 
-        .mo-nav{
-           position: relative;
+        .mo-nav {
+            position: relative;
             top: 30%;
         }
 
-        .mo-nav li a{
+        .mo-nav li a {
             color: #fff;
             font-size: 1.2em;
             text-align: center;
         }
 
-        .mo-nav li a:hover{
+        .mo-nav li a:hover {
             text-decoration: underline;
+        }
+
+        input::-webkit-calendar-picker-indicator {
+            display: none;
+        }
+
+        .image img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+
+        .footer {
+            margin-top: 50px;
         }
 
         @media (max-width: 1300px) {
@@ -320,7 +412,7 @@
                 font-size: 1em !important;
             }
 
-            .description_padding{
+            .description_padding {
                 font-size: 1.7em !important;
             }
 
@@ -352,7 +444,7 @@
                 font-size: 1em !important;
             }
 
-            .description_padding{
+            .description_padding {
                 font-size: 1.7em !important;
             }
 
@@ -379,17 +471,18 @@
         @media (max-width: 320px) {
             .navbar-end {
                 display: none;
-            }
-
-        {# 아이폰5 #}
+            } {
+            # 아이폰5 #
+        }
             .weather_info_width {
                 padding: 6px;
             }
+
             .weather_info_text {
                 font-size: 1em !important;
             }
 
-            .description_padding{
+            .description_padding {
                 font-size: 1em !important;
             }
 
@@ -412,9 +505,9 @@
         @media (max-width: 280px) {
             .navbar-end {
                 display: none;
-            }
-
-        {# 갤럭시폴드 #}
+            } {
+            # 갤럭시폴드 #
+        }
             .weather_info_width {
                 left: 53.5%;
                 padding: 2px;
@@ -476,7 +569,7 @@
 
 
         <div class="weather_info box weather_info_width">
-          
+
             <p class="weather_info_text">{{ nickname }} 위치는 {{ address }} 입니다.</p>
 
             <p class="description_padding">{{ description }}</p>
@@ -489,30 +582,30 @@
                 <div class="title_box">
                     <p class="title title_size">
                         {% if image == "50d" or image == "50n" %}
-                            <img class="weatherIcon" src="http://openweathermap.org/img/wn/{{ image }}@2x.png">
+                        <img class="weatherIcon" src="http://openweathermap.org/img/wn/{{ image }}@2x.png">
                         {% else %}
-                            <img src="/static/animated_weather/{{ image }}.svg" alt="">
+                        <img src="/static/animated_weather/{{ image }}.svg" alt="">
                         {% endif %}
                     </p>
                     <p class="subtitle bar_padding_for_image_tag">
                         {% if image == "50d" or image == "50n" %}
-                            안개
+                        안개
                         {% elif image == "13d" or image == "13n" %}
-                            눈
+                        눈
                         {% elif image == "11d" or image == "11n" %}
-                            뇌우
+                        뇌우
                         {% elif image == "10d" or image == "10n" %}
-                            비
+                        비
                         {% elif image == "09d" or image == "09n" %}
-                            소나기
+                        소나기
                         {% elif image == "04d" or image == "04n" %}
-                            구름 많음
+                        구름 많음
                         {% elif image == "03d" or image == "03n" %}
-                            구름 적음
+                        구름 적음
                         {% elif image == "02d" or image == "02n" %}
-                            흐림
+                        흐림
                         {% elif image == "01d" or image == "01n" %}
-                            맑음
+                        맑음
                         {% endif %}
                     </p>
                 </div>
@@ -538,114 +631,36 @@
         </nav>
     </div>
 
-    <article class="media">
+   <article class="media">
         <figure class="media-left">
             <p class="image is-64x64">
-                <img src="https://bulma.io/images/placeholders/128x128.png">
+                <img src="{{ url_for('static', filename=user_info.profile_pic_real) }}">
             </p>
         </figure>
         <div class="media-content">
             <div class="field">
                 <p class="control">
-                    <textarea class="textarea" placeholder="Add a comment..."></textarea>
+                    <textarea id="textarea-post" class="textarea" placeholder="오늘의 각오 한 마디"></textarea>
                 </p>
             </div>
             <nav class="level">
                 <div class="level-left">
                     <div class="level-item">
-                        <a class="button is-info">Submit</a>
+                        <a onclick="post()" class="button is-info, button is-primary">작성</a>
                     </div>
                 </div>
-                <div class="level-right">
-                    <div class="level-item">
-                        <label class="checkbox">
-                            <input type="checkbox"> Press enter to submit
-                        </label>
-                    </div>
-                </div>
+
             </nav>
         </div>
     </article>
 
 
     <article class="media">
-        <figure class="media-left">
-            <p class="image is-64x64">
-                <img src="https://bulma.io/images/placeholders/128x128.png">
-            </p>
+        <figure id="post-box" class="media-left">
+
         </figure>
         <div class="media-content">
-            <div class="content">
-                <p>
-                    <strong>Barbara Middleton</strong>
-                    <br>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis porta eros lacus, nec
-                    ultricies elit
-                    blandit non. Suspendisse pellentesque mauris sit amet dolor blandit rutrum. Nunc in tempus
-                    turpis.
-                    <br>
-                    <small><a>Like</a> · <a>Reply</a> · 3 hrs</small>
-                </p>
-            </div>
 
-            <article class="media">
-                <figure class="media-left">
-                    <p class="image is-48x48">
-                        <img src="https://bulma.io/images/placeholders/96x96.png">
-                    </p>
-                </figure>
-                <div class="media-content">
-                    <div class="content">
-                        <p>
-                            <strong>Sean Brown</strong>
-                            <br>
-                            Donec sollicitudin urna eget eros malesuada sagittis. Pellentesque habitant morbi
-                            tristique
-                            senectus et netus et malesuada fames ac turpis egestas. Aliquam blandit nisl a nulla
-                            sagittis, a lobortis leo feugiat.
-                            <br>
-                            <small><a>Like</a> · <a>Reply</a> · 2 hrs</small>
-                        </p>
-                    </div>
-
-                    <article class="media">
-                        Vivamus quis semper metus, non tincidunt dolor. Vivamus in mi eu lorem cursus
-                        ullamcorper sit
-                        amet nec massa.
-                    </article>
-
-                    <article class="media">
-                        Morbi vitae diam et purus tincidunt porttitor vel vitae augue. Praesent malesuada metus
-                        sed
-                        pharetra euismod. Cras tellus odio, tincidunt iaculis diam non, porta aliquet tortor.
-                    </article>
-                </div>
-            </article>
-
-            <article class="media">
-                <figure class="media-left">
-                    <p class="image is-48x48">
-                        <img src="https://bulma.io/images/placeholders/96x96.png">
-                    </p>
-                </figure>
-                <div class="media-content">
-                    <div class="content">
-                        <p>
-                            <strong>Kayli Eunice </strong>
-                            <br>
-                            Sed convallis scelerisque mauris, non pulvinar nunc mattis vel. Maecenas varius
-                            felis sit
-                            amet magna vestibulum euismod malesuada cursus libero. Vestibulum ante ipsum primis
-                            in
-                            faucibus orci luctus et ultrices posuere cubilia Curae; Phasellus lacinia non nisl
-                            id
-                            feugiat.
-                            <br>
-                            <small><a>Like</a> · <a>Reply</a> · 2 hrs</small>
-                        </p>
-                    </div>
-                </div>
-            </article>
         </div>
     </article>
 
@@ -665,17 +680,17 @@
     $(".refresh_btn, .main_logo").click(function (e) {
         e.preventDefault();
         window.location.reload();
-        scrollTo(0,0);
+        scrollTo(0, 0);
     });
 
-    $(".navbar-burger").click(function (e){
+    $(".navbar-burger").click(function (e) {
         e.preventDefault();
         $(".mo-slide").fadeIn();
         $(".mo-slide").addClass("ison");
 
     });
 
-    $(".close").click(function (e){
+    $(".close").click(function (e) {
         e.preventDefault();
         $(".mo-slide").fadeOut();
         $(".mo-slide").removeClass("ison");
