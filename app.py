@@ -28,8 +28,7 @@ def home():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
-        ip_index = list()
-        ip_index = IP_setup.sel_IP()
+        ip_index = IP_setup.IP()
         weather_index = list()
 
         for j in IP_setup.weather(ip_index[0][0], ip_index[0][1]):  # lat, lon
@@ -37,7 +36,7 @@ def home():
 
         visitors_counter.visitors()
         today = str(datetime.now()).split(' ')[0]
-        print("날짜, 방문자 업데이트")
+
         return render_template('index.html', address=ip_index[1],
                                temperature=weather_index[0], description=weather_index[1], wind_speed=weather_index[2],
                                humidity=weather_index[3], image=weather_index[4], main=weather_index[5], background_image=weather_index[6],
