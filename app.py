@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 import IP_setup
 import visitors_counter
 import ssl
+
 ssl._create_default_https_context = ssl._create_unverified_context
 
 app = Flask(__name__)
@@ -24,11 +25,11 @@ db = client.dbsparta
 
 @app.route('/')
 def home():
-
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
+        nick_info = db.users.find_one({"username": payload["id"]})['nickname'] + " 님의"
 
         ip_index = IP_setup.IP()
         weather_index = list()
@@ -39,11 +40,15 @@ def home():
         visitors_counter.visitors()
         today = str(datetime.now()).split(' ')[0]
 
-        return render_template('index.html', address=ip_index[1],user_info=user_info,
+        return render_template('index.html', address=ip_index[1], user_info=user_info, nickname=nick_info,
                                temperature=weather_index[0], description=weather_index[1], wind_speed=weather_index[2],
-                               humidity=weather_index[3], image=weather_index[4], main=weather_index[5], background_image=weather_index[6],
-                               visitors_today=str(list(db.todayCounter.find({}, {'_id': False}))).split(" ")[1].split("}")[0],
-                               visitors_total=str(list(db.visitorCounter.find({}, {'_id': False}))).split(" ")[1].split("}")[0], today=today)
+                               humidity=weather_index[3], image=weather_index[4], main=weather_index[5],
+                               background_image=weather_index[6],
+                               visitors_today=
+                               str(list(db.todayCounter.find({}, {'_id': False}))).split(" ")[1].split("}")[0],
+                               visitors_total=
+                               str(list(db.visitorCounter.find({}, {'_id': False}))).split(" ")[1].split("}")[0],
+                               today=today)
 
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
@@ -51,11 +56,17 @@ def home():
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 
-
 @app.route('/login')
 def login():
     msg = request.args.get("msg")
     return render_template('login.html', msg=msg)
+
+
+@app.route('/delete_comment', methods=['POST'])
+def delete_comment():
+    comment_receive = request.form['comment_give']
+    db.posts.delete_one({'comment': comment_receive})
+    return jsonify({'msg': '삭제 완료!'})
 
 
 @app.route('/user/<username>')
@@ -162,10 +173,9 @@ def get_posts():
 
         for post in posts:
             post["_id"] = str(post["_id"])
-        return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.", "posts":posts})
+        return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.", "posts": posts})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
-
 
 
 @app.route('/update_like', methods=['POST'])

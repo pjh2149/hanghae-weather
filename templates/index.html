@@ -102,6 +102,7 @@
                             let post = posts[i]
                             let time_post = new Date(post["date"])
                             let time_before = time2str(time_post)
+                            let comment = post['comment']
                             let html_temp = `<article class="media">
                                                     <figure  id="post-box" class="media-left">
                                                         <p class="image is-64x64">
@@ -111,9 +112,9 @@
                                                     <div class="media-content">
                                                         <div class="content">
                                                             <p>
-                                                                <strong>${post['nickname']}</strong> <small>${time_before}</small>
+                                                                <strong>${post['nickname']}</strong> <small>${time_before}</small><a class="delete_btn"  onclick="delete_comment('${comment}')" ><i class="fa fa-times-circle" aria-hidden="true"></i></a>
                                                                 <br>
-                                                                ${post['comment']}
+                                                                ${comment}
                                                                 <br>
                                                             </p>
                                                         </div>
@@ -125,6 +126,18 @@
                 }
             })
         }
+
+      function delete_comment(comment)  {
+      $.ajax({
+          type: 'POST',
+          url: '/delete_comment',
+          data: {comment_give:comment},
+          success: function (response) {
+              alert(response['msg']);
+              window.location.reload()
+          }
+      });
+  }
 
         $(document).ready(function () {
             get_posts()
