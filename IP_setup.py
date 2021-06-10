@@ -1,112 +1,31 @@
-import threading
-
-import flask
 import requests
 
 from flask import Flask
-from bs4 import BeautifulSoup
-from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
 
 app = Flask(__name__)
 
-def sel_IP():
+ip_address = "218.233.45.33"
+# ip_address = flask.request.remote_addr
 
-    ip_address = "218.233.45.33"
-    # ip_address = flask.request.remote_addr
-
-    def sel():
-        chrome_options = webdriver.ChromeOptions()
-
-        # chrome_options.add_argument('--headless')
-        chrome_options.add_argument('--no-sandbox')
-        chrome_options.add_argument("--disable-dev-shm-usage")
-        try:
-            chrome_options.add_argument("disable-gpu")
-        except:
-            chrome_options.add_argument("--disable-gpu")
-
-        driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
-        driver.set_window_size(0, 0)
-        driver.implicitly_wait(5)
-        driver.get("https://www.iplocation.net/ip-lookup?query=" + ip_address)
-        print(ip_address, "IP 받아오기 성공")
-        print("사이트 입력 완료")
-        driver.implicitly_wait(5)
-
-        # element = driver.find_element_by_xpath('//*[@id="txtAddr"]')
-        # element.send_keys(ip_address)
-        # print("IP 입력 완료")
-        # driver.implicitly_wait(1)
-        #
-        # search_button = driver.find_element_by_xpath('//*[@id="btnAddr2"]')
-        # search_button.click()
-        # print("검색 활성화")
-        # driver.implicitly_wait(4)
-
-        soup = BeautifulSoup(driver.page_source, 'html.parser')
-        address_split1 = ""
-        address_split2 = ""
-        try:
-            print("사이트 접속 완료")
-            address_split1 = soup.select_one('body > section > div > div > div.col.col_8_of_12 > div:nth-child(4) > div > table > tbody:nth-child(2) > tr > td:nth-child(3)').text
-            address_split2 = soup.select_one('body > section > div > div > div.col.col_8_of_12 > div:nth-child(4) > div > table > tbody:nth-child(2) > tr > td:nth-child(4)').text
-            if address_split1 == address_split2:
-                address_split1 = soup.select_one('body > section > div > div > div.col.col_8_of_12 > div:nth-child(5) > div > table > tbody:nth-child(2) > tr > td:nth-child(3)').text
-                address_split2 = soup.select_one('body > section > div > div > div.col.col_8_of_12 > div:nth-child(4) > div > table > tbody:nth-child(2) > tr > td:nth-child(4)').text
-        except:
-            driver.implicitly_wait(5)
-            print("사이트 접속 완료")
-            address_split1 = soup.select_one(
-                'body > section > div > div > div.col.col_8_of_12 > div:nth-child(4) > div > table > tbody:nth-child(2) > tr > td:nth-child(3)').text
-            address_split2 = soup.select_one(
-                'body > section > div > div > div.col.col_8_of_12 > div:nth-child(4) > div > table > tbody:nth-child(2) > tr > td:nth-child(4)').text
-            if address_split1 == address_split2:
-                address_split1 = soup.select_one(
-                    'body > section > div > div > div.col.col_8_of_12 > div:nth-child(5) > div > table > tbody:nth-child(2) > tr > td:nth-child(3)').text
-                address_split2 = soup.select_one(
-                    'body > section > div > div > div.col.col_8_of_12 > div:nth-child(4) > div > table > tbody:nth-child(2) > tr > td:nth-child(4)').text
-
-        try:
-            address_split1 = translator(address_split1)
-            address_split2 = translator(address_split2)
-        except KeyError:
-            try:
-                address_split1 = translator(address_split1)
-                address_split2 = translator(address_split2)
-            except KeyError:
-                try:
-                    address_split1 = translator(address_split1)
-                    address_split2 = translator(address_split2)
-                except KeyError:
-                    print("번역기 사용횟수 초과로 인해 주소 영어표기")
-                    pass
-
-        address_fullname = address_split1 + " " + address_split2
-        driver.close()
-
-        return address_fullname
-
-    def IP():
-        r = requests.get(f"http://api.ipstack.com/{ip_address}?access_key=1a9cbe93c186352fe31f85507d226bb8&format=1",headers={'User-Agent': 'Mozilla/5.0'})
-        result = r.json()
-        lat = round(result["latitude"], 6)
-        lon = round(result["longitude"], 6)
-
-        return [lat, lon]
+def IP():
+    r = requests.get(f"http://api.ipstack.com/{ip_address}?access_key=1a9cbe93c186352fe31f85507d226bb8&format=1", headers={'User-Agent': 'Mozilla/5.0'})
+    result = r.json()
+    region_name = result["region_name"]
+    lat = round(result["latitude"], 6)
+    lon = round(result["longitude"], 6)
 
     try:
-        address = sel()
-    except:
-        print("오류가 발생하여 재실행합니다")
-        address = sel()
-    coordinate = IP()
-
-    return [coordinate, address]
+        region = translator(region_name)
+    except TypeError:
+        try:
+            region = translator2(region_name)
+        except TypeError:
+            region = translator3(region_name)
+    return [[lat, lon], region]
 
 def weather(lat, lon):
     r = requests.get(
-        f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid=3d9290fe0f2425345dc583eb4d290e52&units=metric&lang=kr")
+        f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid=3d9290fe0f2425345dc583eb4d290e52&units=metric")
     result = r.json()
     temperature = round(float(result["main"]["temp"]), 1)
     description = result["weather"][0]["description"]
