@@ -5,10 +5,10 @@ from flask import Flask
 
 app = Flask(__name__)
 
-# ip_address = "218.233.45.33"
+ip_address = "218.233.45.33"
 
 def IP():
-    ip_address = flask.request.remote_addr
+    # ip_address = flask.request.remote_addr
     r = requests.get(f"http://api.ipstack.com/{ip_address}?access_key=1a9cbe93c186352fe31f85507d226bb8&format=1", headers={'User-Agent': 'Mozilla/5.0'})
     result = r.json()
     region_name = result["region_name"]
