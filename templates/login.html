@@ -8,7 +8,13 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" type="image/x-icon" href="../static/fabicon.ico" />
+    <!-- meta og -->
+    <meta property="og:url" content="http://nahan.shop"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:description" content="코딩하기 좋은 날"/>
+    <meta property="og:title" content="항해 날씨"/>
+    <meta property="og:image" content="{{ url_for('static', filename='logo.png') }}"/>
+    <link rel="shortcut icon" type="image/x-icon" href="../static/fabicon.ico"/>
 
     <!-- Bulma CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
@@ -65,28 +71,27 @@
         }
 
 
-
-        .logo_img{
+        .logo_img {
             width: 50%;
             margin: 0 auto;
         }
 
-        .logo_img img{
+        .logo_img img {
             width: 100%;
         }
 
-        .backblur{
+        .backblur {
             position: fixed;
             width: 100vw;
             height: 100vh;
-            background: rgba(0,0,0,0.2);
+            background: rgba(0, 0, 0, 0.2);
         }
 
     </style>
     <script>
         // {% if msg %}
-        //     alert("{{ msg }}")
-        // {% endif %}
+            //     alert("{{ msg }}")
+            // {% endif %}
         function sign_in() {
             let username = $("#input-username").val()
             let password = $("#input-password").val()
@@ -272,7 +277,6 @@
                         </div>
 
 
-
                     </div>
                     <div id="div-sign-in-or-up" class="has-text-centered">
                         <nav class="level is-mobile">
@@ -315,8 +319,6 @@
                                 </div>
                             </div>
                         </div>
-
-
 
 
                         <nav class="level is-mobile">
