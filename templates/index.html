@@ -3,6 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta property="og:title" content="항해 날씨"/>
+
+    <meta property="og:description" content="항해를 위한 날씨 정보 제공 웹"/>
+
+    <meta property="og:image" content="{{ url_for('static', filename='logo.png') }}"/>
+
+
     <link rel="shortcut icon" type="image/x-icon" href="../static/fabicon.ico"/>
     <!-- Bulma CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
@@ -171,12 +179,11 @@
         }
 
 
-
         .weather_info {
             width: 45%;
             height: 100px;
             margin-top: 340px;
-            margin-right: 40px;
+            margin-right: 10%;
             float: right;
             display: block;
             background: rgba(0, 0, 0, 0.5);
@@ -190,7 +197,7 @@
         .weather_info p {
             text-align: right;
             color: #ffffff;
-            font-size: 1.1vw;
+            font-size: 1.3vw;
         }
 
         .bar_padding {
@@ -275,7 +282,7 @@
         }
 
         .main_logo {
-            width: 15%;
+            width: 18%;
             margin: auto;
             padding: 2% 0;
         }
@@ -288,14 +295,14 @@
             background: #fff;
         }
 
-        .footer p {
-            font-size: 1.5vw;
+        .footertext {
+            font-size: 2em;
         }
 
         .mo-slide {
             width: 60%;
             height: 100vh;
-            background: black;
+            background: cornflowerblue;
             position: fixed;
             top: 0;
             right: 0px;
@@ -369,6 +376,14 @@
             height: 100%;
         }
 
+        .write_box{
+            margin-top: 130px;
+        }
+
+        .comment_box{
+            margin-bottom: 100px;
+        }
+
         .footer {
             margin-top: 50px;
         }
@@ -381,6 +396,10 @@
             .weather_info_text {
                 font-size: 16px;
             }
+            .weather_text{
+                font-size: 1.7em !important;
+            }
+
         }
 
         @media (max-width: 1023px) {
@@ -398,9 +417,22 @@
             .wrap {
                 width: 100%;
             }
+
+            .weather_text{
+                font-size: 1.7em !important;
+            }
         }
 
         @media (max-width: 640px) {
+
+            .main_logo{
+                width: 50% !important;
+                margin-bottom: 30px;
+            }
+            .main_logo img{
+                width: 100% !important;
+            }
+
 
             .navbar-end {
                 display: none;
@@ -410,8 +442,8 @@
                 font-size: 18px;
             }
 
-            .weather_info_text {
-                font-size: 1em !important;
+            .weather_text{
+                font-size: 1.7em !important;
             }
 
             .description_padding {
@@ -428,9 +460,20 @@
                 right: 3%;
                 bottom: 2%;
             }
+
         }
 
         @media (max-width: 414px) {
+            .main_logo{
+                width: 50% !important;
+                margin-bottom: 30px;
+            }
+            .main_logo img{
+                width: 100% !important;
+            }
+
+
+
             .navbar-end {
                 display: none;
             }
@@ -442,8 +485,9 @@
                 transform: translateX(-50%);
             }
 
-            .weather_info_text {
-                font-size: 1em !important;
+
+            .weather_text{
+                font-size: 1.7em !important;
             }
 
             .description_padding {
@@ -468,24 +512,39 @@
             .kakao a {
                 display: none;
             }
+
+
         }
 
         @media (max-width: 320px) {
+
+            .main_logo{
+                width: 50% !important;
+                margin-bottom: 30px;
+            }
+            .main_logo img{
+                width: 100% !important;
+            }
+
+
+
+
             .navbar-end {
                 display: none;
-            } {
-            # 아이폰5 #
-        }
+            }
+
             .weather_info_width {
                 padding: 6px;
             }
 
-            .weather_info_text {
-                font-size: 1em !important;
-            }
+
 
             .description_padding {
                 font-size: 1em !important;
+            }
+
+            .weather_text{
+                font-size: 1.7em !important;
             }
 
             .title_phone {
@@ -502,9 +561,23 @@
             .kakao a {
                 display: none;
             }
+
+
         }
 
         @media (max-width: 280px) {
+            .main_logo{
+                width: 50% !important;
+                margin-bottom: 30px;
+            }
+            .main_logo img{
+                width: 100% !important;
+            }
+
+            .weather_text{
+                font-size: 3em !important;
+            }
+
             .navbar-end {
                 display: none;
             } {
@@ -557,7 +630,7 @@
     </nav>
 
     <div class="mo-slide">
-        <a href="#" class="close"></a>>
+        <a href="#" class="close"></a>
         <ul class="mo-nav">
             <li><a href="#">카카오톡 공유하기</a></li>
         </ul>
@@ -572,9 +645,9 @@
 
         <div class="weather_info box weather_info_width">
 
-            <p class="weather_info_text">{{ nickname }} 위치는 {{ address }} 입니다.</p>
+            <p class="weather_info_text weather_text">{{ nickname }} 위치는 {{ address }} 입니다.</p>
 
-            <p class="description_padding">{{ description }}</p>
+            <p class="description_padding weather_text">{{ description }}</p>
         </div>
 
     </div>
@@ -584,30 +657,30 @@
                 <div class="title_box">
                     <p class="title title_size">
                         {% if image == "50d" or image == "50n" %}
-                        <img class="weatherIcon" src="http://openweathermap.org/img/wn/{{ image }}@2x.png">
+                            <img class="weatherIcon" src="http://openweathermap.org/img/wn/{{ image }}@2x.png">
                         {% else %}
-                        <img src="/static/animated_weather/{{ image }}.svg" alt="">
+                            <img src="/static/animated_weather/{{ image }}.svg" alt="">
                         {% endif %}
                     </p>
                     <p class="subtitle bar_padding_for_image_tag">
                         {% if image == "50d" or image == "50n" %}
-                        안개
+                            안개
                         {% elif image == "13d" or image == "13n" %}
-                        눈
+                            눈
                         {% elif image == "11d" or image == "11n" %}
-                        뇌우
+                            뇌우
                         {% elif image == "10d" or image == "10n" %}
-                        비
+                            비
                         {% elif image == "09d" or image == "09n" %}
-                        소나기
+                            소나기
                         {% elif image == "04d" or image == "04n" %}
-                        구름 많음
+                            구름 많음
                         {% elif image == "03d" or image == "03n" %}
-                        구름 적음
+                            구름 적음
                         {% elif image == "02d" or image == "02n" %}
-                        흐림
+                            흐림
                         {% elif image == "01d" or image == "01n" %}
-                        맑음
+                            맑음
                         {% endif %}
                     </p>
                 </div>
@@ -633,43 +706,45 @@
         </nav>
     </div>
 
-   <article class="media">
-        <figure class="media-left">
-            <p class="image is-64x64">
-                <img src="{{ url_for('static', filename=user_info.profile_pic_real) }}">
-            </p>
-        </figure>
-        <div class="media-content">
-            <div class="field">
-                <p class="control">
-                    <textarea id="textarea-post" class="textarea" placeholder="오늘의 각오 한 마디"></textarea>
+    <div class="write_box">
+        <article class="media">
+            <figure class="media-left">
+                <p class="image is-64x64">
+                    <img src="{{ url_for('static', filename=user_info.profile_pic_real) }}">
                 </p>
-            </div>
-            <nav class="level">
-                <div class="level-left">
-                    <div class="level-item">
-                        <a onclick="post()" class="button is-info, button is-primary">작성</a>
-                    </div>
+            </figure>
+            <div class="media-content">
+                <div class="field">
+                    <p class="control">
+                        <textarea id="textarea-post" class="textarea" placeholder="오늘의 각오 한 마디"></textarea>
+                    </p>
                 </div>
+                <nav class="level">
+                    <div class="level-left">
+                        <div class="level-item">
+                            <a onclick="post()" class="button is-info, button is-primary">작성</a>
+                        </div>
+                    </div>
 
-            </nav>
-        </div>
-    </article>
+                </nav>
+            </div>
+        </article>
+    </div>
 
     <div class="comment_box">
-    <article class="media">
-        <figure id="post-box" class="media-left">
+        <article class="media">
+            <figure id="post-box" class="media-left">
 
-        </figure>
-        <div class="media-content">
+            </figure>
+            <div class="media-content">
 
-        </div>
-    </article>
+            </div>
+        </article>
     </div>
 
     <footer class="footer">
         <div class="content has-text-centered">
-            <p>
+            <p class="footertext">
                 <strong>항해날씨</strong> by 32조
             </p>
         </div>
