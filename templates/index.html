@@ -111,8 +111,9 @@
                                                     </figure>
                                                     <div class="media-content">
                                                         <div class="content">
-                                                            <p>
-                                                                <strong>${post['nickname']}</strong> <small>${time_before}</small><a class="delete_btn"  onclick="delete_comment('${comment}')" ><i class="fa fa-times-circle" aria-hidden="true"></i></a>
+                                                            <p class="comment_top">
+                                                                <a class="delete_btn" onclick="delete_comment('${comment}')" ><i class="fa fa-times-circle" aria-hidden="true"></i></a>
+                                                                <strong>${post['nickname']}</strong> <small>${time_before}</small>
                                                                 <br>
                                                                 ${comment}
                                                                 <br>
@@ -183,9 +184,9 @@
         }
 
         .logout_btn a {
-            width: 10%;
+            width: 15%;
             position: absolute;
-            right: 2%;
+            right: 3%;
             color: #333 !important;
 
         }
@@ -425,6 +426,19 @@
             margin-bottom: 100px;
         }
 
+        .comment_top{
+            position: relative;
+            width: 100%;
+            padding-top: 10px;
+            padding-left: 10px;
+        }
+
+        .delete_btn{
+            position: absolute;
+            right: 3%;
+        }
+
+
         .footer {
             margin-top: 50px;
         }
@@ -477,6 +491,12 @@
                 width: 100% !important;
             }
 
+            .logout_btn a {
+            width: 8% !important;
+            position: absolute;
+            right: 10% !important;
+            color: #333 !important;
+            }
 
             .navbar-end {
                 display: none;
@@ -602,6 +622,13 @@
 
             .kakao a {
                 display: none;
+            }
+
+            .logout_btn a {
+            width: 8% !important;
+            position: absolute;
+            right: 15% !important;
+            color: #333 !important;
             }
 
 
