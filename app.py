@@ -28,8 +28,7 @@ def home():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
-        ip_index = list()
-        ip_index = IP_setup.sel_IP()
+        ip_index = IP_setup.IP()
         weather_index = list()
 
         for j in IP_setup.weather(ip_index[0][0], ip_index[0][1]):  # lat, lon
