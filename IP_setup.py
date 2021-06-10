@@ -6,6 +6,7 @@ import requests
 from flask import Flask
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 
 app = Flask(__name__)
 
@@ -15,32 +16,74 @@ def sel_IP():
     # ip_address = flask.request.remote_addr
 
     def sel():
-        options = webdriver.ChromeOptions()
-        options.add_argument("headless")
-        driver = webdriver.Chrome('chromedriver', options=options)
-        # driver = webdriver.Chrome('chromedriver')
-        driver.get("https://mylocation.co.kr/")
-        driver.implicitly_wait(0.3)
+        chrome_options = webdriver.ChromeOptions()
 
-        element = driver.find_element_by_xpath('//*[@id="txtAddr"]')
-        element.send_keys(ip_address)
-
-        driver.implicitly_wait(0.3)
-
+        # chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument("--disable-dev-shm-usage")
         try:
-            search_button = driver.find_element_by_xpath('//*[@id="btnAddr2"]')
-            search_button.click()
-            driver.implicitly_wait(0.5)
-
+            chrome_options.add_argument("disable-gpu")
         except:
-            search_button = driver.find_element_by_xpath('// *[ @ id = "table2"] / tbody / tr[5] / td[2] / a')
-            search_button.click()
+            chrome_options.add_argument("--disable-gpu")
+
+        driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
+        driver.set_window_size(0, 0)
+        driver.implicitly_wait(5)
+        driver.get("https://www.iplocation.net/ip-lookup?query=" + ip_address)
+        print(ip_address, "IP 받아오기 성공")
+        print("사이트 입력 완료")
+        driver.implicitly_wait(5)
+
+        # element = driver.find_element_by_xpath('//*[@id="txtAddr"]')
+        # element.send_keys(ip_address)
+        # print("IP 입력 완료")
+        # driver.implicitly_wait(1)
+        #
+        # search_button = driver.find_element_by_xpath('//*[@id="btnAddr2"]')
+        # search_button.click()
+        # print("검색 활성화")
+        # driver.implicitly_wait(4)
 
         soup = BeautifulSoup(driver.page_source, 'html.parser')
-        address_split = soup.select_one('#lbAddr').text.split(" ")
-        address_fullname = address_split[0] + " "+ address_split[1]
+        address_split1 = ""
+        address_split2 = ""
+        try:
+            print("사이트 접속 완료")
+            address_split1 = soup.select_one('body > section > div > div > div.col.col_8_of_12 > div:nth-child(4) > div > table > tbody:nth-child(2) > tr > td:nth-child(3)').text
+            address_split2 = soup.select_one('body > section > div > div > div.col.col_8_of_12 > div:nth-child(4) > div > table > tbody:nth-child(2) > tr > td:nth-child(4)').text
+            if address_split1 == address_split2:
+                address_split1 = soup.select_one('body > section > div > div > div.col.col_8_of_12 > div:nth-child(5) > div > table > tbody:nth-child(2) > tr > td:nth-child(3)').text
+                address_split2 = soup.select_one('body > section > div > div > div.col.col_8_of_12 > div:nth-child(4) > div > table > tbody:nth-child(2) > tr > td:nth-child(4)').text
+        except:
+            driver.implicitly_wait(5)
+            print("사이트 접속 완료")
+            address_split1 = soup.select_one(
+                'body > section > div > div > div.col.col_8_of_12 > div:nth-child(4) > div > table > tbody:nth-child(2) > tr > td:nth-child(3)').text
+            address_split2 = soup.select_one(
+                'body > section > div > div > div.col.col_8_of_12 > div:nth-child(4) > div > table > tbody:nth-child(2) > tr > td:nth-child(4)').text
+            if address_split1 == address_split2:
+                address_split1 = soup.select_one(
+                    'body > section > div > div > div.col.col_8_of_12 > div:nth-child(5) > div > table > tbody:nth-child(2) > tr > td:nth-child(3)').text
+                address_split2 = soup.select_one(
+                    'body > section > div > div > div.col.col_8_of_12 > div:nth-child(4) > div > table > tbody:nth-child(2) > tr > td:nth-child(4)').text
 
-        driver.quit()
+        try:
+            address_split1 = translator(address_split1)
+            address_split2 = translator(address_split2)
+        except KeyError:
+            try:
+                address_split1 = translator(address_split1)
+                address_split2 = translator(address_split2)
+            except KeyError:
+                try:
+                    address_split1 = translator(address_split1)
+                    address_split2 = translator(address_split2)
+                except KeyError:
+                    print("번역기 사용횟수 초과로 인해 주소 영어표기")
+                    pass
+
+        address_fullname = address_split1 + " " + address_split2
+        driver.close()
 
         return address_fullname
 
@@ -52,8 +95,12 @@ def sel_IP():
 
         return [lat, lon]
 
+    try:
+        address = sel()
+    except:
+        print("오류가 발생하여 재실행합니다")
+        address = sel()
     coordinate = IP()
-    address = sel()
 
     return [coordinate, address]
 
@@ -79,3 +126,24 @@ def weather(lat, lon):
         background_image = "https://thumbs.dreamstime.com/b/ship-white-sails-waves-sea-ocean-marine-background-illustration-discovery-america-columbus-121516839.jpg"
 
     return [temperature, description, wind_speed, humidity, image, main, background_image]
+
+def translator(text):
+    request_url = "https://openapi.naver.com/v1/papago/n2mt"
+    headers = {"X-Naver-Client-Id": "rcKyc1EaWsLVqa7_KMcV", "X-Naver-Client-Secret": "S0Xt7xUDbk"}
+    params = {"source": "en", "target": "ko", "text": text}
+    response = requests.post(request_url, headers=headers, data=params)
+    return response.json()['message']['result']['translatedText']
+
+def translator2(text):
+    request_url = "https://openapi.naver.com/v1/papago/n2mt"
+    headers = {"X-Naver-Client-Id": "vkiqbYUMOxV5kvNjSelf", "X-Naver-Client-Secret": "yTOQNBsIwq"}
+    params = {"source": "en", "target": "ko", "text": text}
+    response = requests.post(request_url, headers=headers, data=params)
+    return response.json()['message']['result']['translatedText']
+
+def translator3(text):
+    request_url = "https://openapi.naver.com/v1/papago/n2mt"
+    headers = {"X-Naver-Client-Id": "6uSpE4vIWa6ayIFlERQD", "X-Naver-Client-Secret": "8SqYAfF8W5"}
+    params = {"source": "en", "target": "ko", "text": text}
+    response = requests.post(request_url, headers=headers, data=params)
+    return response.json()['message']['result']['translatedText']

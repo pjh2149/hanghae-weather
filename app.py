@@ -1,5 +1,3 @@
-import threading
-
 import jwt
 import datetime
 import hashlib
@@ -31,25 +29,20 @@ def home():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
         ip_index = list()
+        ip_index = IP_setup.sel_IP()
         weather_index = list()
-
-        def ip_index_thread():
-            for i in IP_setup.sel_IP():
-                ip_index.append(i)
-
-        threading.Thread(target=ip_index_thread()).start()
 
         for j in IP_setup.weather(ip_index[0][0], ip_index[0][1]):  # lat, lon
             weather_index.append(j)
 
         visitors_counter.visitors()
         today = str(datetime.now()).split(' ')[0]
-
+        print("날짜, 방문자 업데이트")
         return render_template('index.html', address=ip_index[1],
                                temperature=weather_index[0], description=weather_index[1], wind_speed=weather_index[2],
                                humidity=weather_index[3], image=weather_index[4], main=weather_index[5], background_image=weather_index[6],
-                               visitors_today=list(db.todayCounter.find({}, {'_id': False})),
-                               visitors_total=list(db.visitorCounter.find({}, {'_id': False})), today=today)
+                               visitors_today=str(list(db.todayCounter.find({}, {'_id': False}))).split(" ")[1].split("}")[0],
+                               visitors_total=str(list(db.visitorCounter.find({}, {'_id': False}))).split(" ")[1].split("}")[0], today=today)
 
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
