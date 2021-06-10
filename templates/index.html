@@ -3,13 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" type="image/x-icon" href="../static/fabicon.ico" />
 
+    <!-- meta og -->
+    <meta property="og:url" content="http://nahan.shop"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:description" content="코딩하기 좋은 날"/>
     <meta property="og:title" content="항해 날씨"/>
-
-    <meta property="og:description" content="항해를 위한 날씨 정보 제공 웹"/>
-
     <meta property="og:image" content="{{ url_for('static', filename='logo.png') }}"/>
-
 
     <link rel="shortcut icon" type="image/x-icon" href="../static/fabicon.ico"/>
     <!-- Bulma CSS -->
@@ -31,18 +32,25 @@
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 
     <script src="https://kit.fontawesome.com/ac418ea973.js" crossorigin="anonymous"></script>
-    <script type="text/javascript">
-        Kakao.init('a03c10d32f60b8eeeac95469defb73fe');
-
-        function sendLink() { // 카카오톡 공유하기
+    <script>
+        Kakao.init('2b171098ef234d44653189bbc4170963');
+        Kakao.isInitialized();
+    </script>
+    <script>
+        function sendLink() {
             Kakao.Link.sendDefault({
-                objectType: 'text',
-                text: "?",
-                link: {
-                    mobileWebUrl: 'https://developers.kakao.com/docs/js/kakaotalklink#텍스트-템플릿-보내기',
-                    webUrl: 'https://developers.kakao.com/docs/js/kakaotalklink#텍스트-템플릿-보내기',
+                objectType: "feed",
+                content: {
+                    title: "항해날씨",
+                    description: "코딩하기 좋은 날",
+                    imageUrl:
+                        "https://ibb.co/xSTHhb4",
+                    link: {
+                        mobileWebUrl: "http://nahan.shop",
+                        webUrl: "http://nahan.shop",
+                    },
                 },
-            })
+            });
         }
 
         function post() {
