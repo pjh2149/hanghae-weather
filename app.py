@@ -1,6 +1,6 @@
-import jwt
 import datetime
 import hashlib
+import jwt
 
 from pymongo import MongoClient
 from flask import Flask, render_template, jsonify, request, redirect, url_for
@@ -24,9 +24,11 @@ db = client.dbsparta
 
 @app.route('/')
 def home():
+
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
 
         ip_index = IP_setup.IP()
         weather_index = list()
@@ -37,7 +39,7 @@ def home():
         visitors_counter.visitors()
         today = str(datetime.now()).split(' ')[0]
 
-        return render_template('index.html', address=ip_index[1],
+        return render_template('index.html', address=ip_index[1],user_info=user_info,
                                temperature=weather_index[0], description=weather_index[1], wind_speed=weather_index[2],
                                humidity=weather_index[3], image=weather_index[4], main=weather_index[5], background_image=weather_index[6],
                                visitors_today=str(list(db.todayCounter.find({}, {'_id': False}))).split(" ")[1].split("}")[0],
@@ -134,8 +136,19 @@ def posting():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        # 포스팅하기
-        return jsonify({"result": "success", 'msg': '포스팅 성공'})
+        user_info = db.users.find_one({"username": payload["id"]})
+        comment_receive = request.form["comment_give"]
+        date_receive = request.form["date_give"]
+        doc = {
+            "username": user_info["username"],
+            "profile_name": user_info["profile_name"],
+            "profile_pic_real": user_info["profile_pic_real"],
+            "nickname": user_info["nickname"],
+            "comment": comment_receive,
+            "date": date_receive
+        }
+        db.posts.insert_one(doc)
+        return jsonify({"result": "success", 'msg': '작성완료'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
@@ -145,8 +158,11 @@ def get_posts():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        # 포스팅 목록 받아오기
-        return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다."})
+        posts = list(db.posts.find({}).sort("date", -1))
+
+        for post in posts:
+            post["_id"] = str(post["_id"])
+        return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.", "posts":posts})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
